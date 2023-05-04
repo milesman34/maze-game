@@ -15,19 +15,17 @@ let game = Game(GameState.Game);
 
 let level = Level.loadFromLayout(
     game,
-
     [
-        "AAAAAAAAAAA",
-        "A         A",
-        "A AAAAAAA A",
-        "A AC  C A A",
-        "A ACAAA   A",
-        "A ACABC A A",
-        "A A A A A A",
-        "A       A A",
-        "A AAAAAAA A",
-        "A    CC   A",
-        "AAAAAAAAAAA"
+        "AAAAAAAAAA",
+        "A        A",
+        "A A AAAACA",
+        "AAA   A  A",
+        "ABA A ACAA",
+        "A A   A  A",
+        "A A A A AA",
+        "ACACACAC A",
+        "A   A    A",
+        "AAAAAAAAAA"
     ], 
     {
         "A": standardWall,
@@ -35,7 +33,8 @@ let level = Level.loadFromLayout(
         "C": standardCoin
     }, 
     {
-        startPos: Point(1, 1)
+        startPos: Point(1, 1),
+        scale: 2
     }
 );
 

@@ -5,11 +5,14 @@ import * as constants from "./constants"
 
 // This object represents a level in the game
 // The level could handle drawing as well
-const Level = ({width = constants.numTiles, height = constants.numTiles, startPos = Point(0, 0), game = {}} = {}) => {
+const Level = ({width = constants.numTiles, height = constants.numTiles, startPos = Point(0, 0), game = {}, scale = 1} = {}) => {
     let object = {
         // Level dimensions
         width,
         height,
+
+        // Scale of the level
+        scale,
 
         // Reference to the game
         game,
@@ -69,6 +72,14 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
 
         // Draws the level
         draw() {
+            // Set app stage offset
+            let offset = this.getCenterOffset();
+
+            // app.stage.x = offset.x;
+            // app.stage.y = offset.y;
+
+            app.stage.scale.set(this.scale, this.scale);
+
             this.objectTable.iterate((object, x, y) => {
                 if (object !== null) {
                     object.draw();
@@ -94,13 +105,11 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
             );
         },
 
-        // Calculates the position of an object adjusted to tileSize and offset
+        // Calculates the position of an object adjusted to tileSize
         calculatePosition(pos) {
-            let offset = this.getCenterOffset();
-
             return Point(
-                pos.x * this.tileSize + offset.x,
-                pos.y * this.tileSize + offset.y
+                pos.x * this.tileSize,
+                pos.y * this.tileSize
             );
         },
 

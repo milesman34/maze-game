@@ -1,5 +1,4 @@
 Consider switching to TypeScript
-Add multiple types of coins/walls (different textures/values, etc)
 Add some way to store multiple levels and link them together
 Add ways to go from 1 level to another (will be a bit more complicated)
 Add energy system eventually?
