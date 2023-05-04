@@ -23,7 +23,7 @@ let level = Level.loadFromLayout(
         "A AAAAAAA A",
         "A AC  C A A",
         "A ACAAA   A",
-        "A ACA C A A",
+        "A ACADC A A",
         "A A A A A A",
         "A       A A",
         "A AAAAAAA A",
@@ -35,7 +35,15 @@ let level = Level.loadFromLayout(
             path: "./assets/tiles/standard_wall.png"
         }),
 
-        "C": Coin()
+        "C": Coin({
+            path: "./assets/tiles/coin.png",
+            score: 1
+        }),
+
+        "D": Coin({
+            path: "./assets/tiles/blue_coin.png",
+            score: 5
+        })
     }, 
     {
         startPos: Point(1, 1)
