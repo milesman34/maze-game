@@ -4,6 +4,22 @@ const GameState = {
     Game: 1
 }
 
+// Direction enum
+const Direction = {
+    Left: 0,
+    Right: 1,
+    Up: 2,
+    Down: 3
+}
+
+// Type of a maze object
+const MazeObjectType = {
+    Wall: 0,
+    Coin: 1
+}
+
 export {
-    GameState
+    Direction,
+    GameState,
+    MazeObjectType
 }

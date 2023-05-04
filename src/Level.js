@@ -2,6 +2,8 @@ import ObjectTable from "./ObjectTable";
 import Point from "./Point";
 import _ from "lodash";
 import * as constants from "./constants"
+import Tile from "./Tile";
+import { MazeObjectType } from "./enums";
 
 // This object represents a level in the game
 // The level could handle drawing as well
@@ -64,7 +66,7 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         draw() {
             this.objectTable.iterate((object, x, y) => {
                 if (object !== null) {
-                    object.drawAt(x, y);
+                    object.drawAt(Point(x, y));
                 }
             });
         },
@@ -88,13 +90,25 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         },
 
         // Calculates the position of an object adjusted to tileSize and offset
-        calculatePosition(x, y) {
+        calculatePosition(pos) {
             let offset = this.getCenterOffset();
 
             return Point(
-                x * this.tileSize + offset.x,
-                y * this.tileSize + offset.y
+                pos.x * this.tileSize + offset.x,
+                pos.y * this.tileSize + offset.y
             );
+        },
+
+        // Checks if a position is valid for this level
+        isPositionValid(pos) {
+            // Check if position is out of bounds
+            if (pos.x < 0 || pos.x >= this.width || pos.y < 0 || pos.y >= this.height)
+                return false;
+
+            // Get the object at that position
+            let object = this.objectTable.getObject(pos.x, pos.y);
+
+            return object === null || object.getType() !== MazeObjectType.Wall;
         }
     };
 
