@@ -24,6 +24,11 @@ const ObjectTable = (width, height, defaultItem=null) => ({
         this.table[col][row] = object;
     },
 
+    // Removes an object from the object table
+    removeObject(x, y) {
+        this.table[x][y] = null;
+    },
+
     // Iterates over the object table using a function (that accepts parameters object, x, y)
     iterate(fn) {
         this.table.forEach((row, x) => {

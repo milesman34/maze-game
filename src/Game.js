@@ -12,6 +12,9 @@ const Game = state => ({
     // Player object
     player: null,
 
+    // Current score
+    score: 0,
+
     // Gets the current game state
     getState() {
         return this.state;
@@ -38,6 +41,22 @@ const Game = state => ({
         });
 
         this.player.draw();
+    },
+
+    // Gets the current score
+    getScore() {
+        return this.score;
+    },
+
+    // Sets the current score
+    setScore(score) {
+        this.score = score;
+    },
+
+    // Adds to the current score
+    addScore(amount) {
+        this.setScore(this.score + amount);
+        console.log(this.score);
     },
 
     // Gets the current center offset for the level

@@ -2,8 +2,6 @@ import ObjectTable from "./ObjectTable";
 import Point from "./Point";
 import _ from "lodash";
 import * as constants from "./constants"
-import Tile from "./tiles/Tile";
-import { MazeObjectType } from "./enums";
 
 // This object represents a level in the game
 // The level could handle drawing as well
@@ -13,7 +11,7 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         width,
         height,
 
-        // Refernece to the game
+        // Reference to the game
         game,
 
         // Tile size
@@ -40,6 +38,11 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
             return this.height;
         },
 
+        // Sets the game
+        setGame(game) {
+            this.game = game;
+        },
+
         // Sets up a maze based on an array of strings that maps out the layout + an object that maps characters to game objects
         loadFromLayout(stringArray, charMap) {
             // Reset object table if dimensions are off
@@ -56,7 +59,9 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
                     // The character maps to something in the map, so we know the given object exists there
                     if (char in charMap) {
                         // We need to find a better way to handle making sure its a unique object, maybe a dedicated copy function which can handle arrays or objects
-                        this.objectTable.setObjectWithRow(row, col, {..._.cloneDeep(charMap[char]), level: this});
+                        let newObject = {..._.cloneDeep(charMap[char]), level: this, game: this.game, position: Point(col, row)};
+
+                        this.objectTable.setObjectWithRow(row, col, newObject);
                     }
                 }
             }
@@ -66,7 +71,7 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         draw() {
             this.objectTable.iterate((object, x, y) => {
                 if (object !== null) {
-                    object.drawAt(Point(x, y));
+                    object.draw();
                 }
             });
         },
@@ -114,6 +119,11 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         // Gets the object at a given position
         getObjectAt(pos) {
             return this.objectTable.getObject(pos.x, pos.y);
+        },
+
+        // Removes the object at a given position
+        removeObjectAt(pos) {
+            this.objectTable.removeObject(pos.x, pos.y);
         }
     };
 
@@ -121,8 +131,8 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
 };
 
 // Loads a level from a layout (supports extra parameters)
-Level.loadFromLayout = (stringArray, charMap, params) => {
-    let level = Level(params);
+Level.loadFromLayout = (game, stringArray, charMap, params) => {
+    let level = Level({...params, game});
 
     level.loadFromLayout(stringArray, charMap);
 

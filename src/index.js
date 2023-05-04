@@ -15,6 +15,8 @@ $("#canvas-container").append(app.view);
 let game = Game(GameState.Game);
 
 let level = Level.loadFromLayout(
+    game,
+
     [
         "AAAAAAAAAAA",
         "A         A",

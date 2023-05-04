@@ -1,10 +1,17 @@
+import Point from "../Point";
+
 // This object represents a tile in the game
-const Tile = ({path, level = {}, solid = false, handleCollision = function() {}}) => {
+const Tile = ({path, position = Point(0, 0), level = {}, solid = false, handleCollision = function() {}}) => {
     let object = {
         // Track the current sprite
         sprite: null,
 
-        // Reference to the game
+        // Current position
+        position,
+
+        // Reference to the game/level
+        game: null,
+
         level,
 
         // Is the object solid?
@@ -17,14 +24,14 @@ const Tile = ({path, level = {}, solid = false, handleCollision = function() {}}
         // Handles a collision
         handleCollision,
 
-        // Draws the tile at a given position
-        drawAt(pos) {
+        // Draws the tile
+        draw() {
             if (this.sprite !== null)
                 return;
 
             let sprite = PIXI.Sprite.from(path);
 
-            let position = this.level.calculatePosition(pos);
+            let position = this.level.calculatePosition(this.position);
 
             sprite.x = position.x;
             sprite.y = position.y;
@@ -42,6 +49,8 @@ const Tile = ({path, level = {}, solid = false, handleCollision = function() {}}
             app.stage.removeChild(this.sprite);
             this.sprite.destroy();
             this.sprite = null;
+
+            this.level.removeObjectAt(this.position);
         }
     }
 

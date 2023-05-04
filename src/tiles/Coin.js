@@ -1,4 +1,3 @@
-import { MazeObjectType } from "../enums"
 import Tile from "./Tile";
 
 // This object represents a wall in the game, so it has collision
@@ -9,6 +8,7 @@ const Coin = ({level = {}} = {}) => {
         solid: false, 
 
         handleCollision() {
+            this.game.addScore(1);
             this.destroy();
         }
     });
