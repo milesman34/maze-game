@@ -58,7 +58,6 @@ const Game = state => {
         // Adds to the current score
         addScore(amount) {
             this.setScore(this.score + amount);
-            console.log(this.score);
         },
 
         // Gets the current center offset for the level
