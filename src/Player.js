@@ -48,6 +48,9 @@ const Player = ({game, position, level = {}}) => {
 
         // Deletes the player graphics
         deleteSprite() {
+            if (this.sprite === null)
+                return;
+
             app.stage.removeChild(this.sprite);
             this.sprite.destroy();
             this.sprite = null;
@@ -62,6 +65,12 @@ const Player = ({game, position, level = {}}) => {
                 this.deleteSprite();
                 this.position = this.position.add(offset);
                 this.draw();
+
+                // Gets the object at that position and handles collision aspects
+                let object = this.level.getObjectAt(this.position);
+
+                if (object !== null)
+                    object.handleCollision();
             }
         },
 

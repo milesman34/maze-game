@@ -1,7 +1,5 @@
-import { MazeObjectType } from "./enums";
-
 // This object represents a tile in the game
-const Tile = ({path, level = {}, type=MazeObjectType.Wall}) => {
+const Tile = ({path, level = {}, solid = false, handleCollision = function() {}}) => {
     let object = {
         // Track the current sprite
         sprite: null,
@@ -9,13 +7,15 @@ const Tile = ({path, level = {}, type=MazeObjectType.Wall}) => {
         // Reference to the game
         level,
 
-        // Type of tile
-        type,
-
-        // Gets the type of object
-        getType() {
-            return this.type;
+        // Is the object solid?
+        solid,
+        
+        isSolid() {
+            return this.solid;
         },
+
+        // Handles a collision
+        handleCollision,
 
         // Draws the tile at a given position
         drawAt(pos) {
@@ -32,6 +32,16 @@ const Tile = ({path, level = {}, type=MazeObjectType.Wall}) => {
             app.stage.addChild(sprite);
 
             this.sprite = sprite;
+        },
+
+        // Destroys the object
+        destroy() {
+            if (this.sprite === null)
+                return;
+
+            app.stage.removeChild(this.sprite);
+            this.sprite.destroy();
+            this.sprite = null;
         }
     }
 

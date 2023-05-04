@@ -2,7 +2,7 @@ import ObjectTable from "./ObjectTable";
 import Point from "./Point";
 import _ from "lodash";
 import * as constants from "./constants"
-import Tile from "./Tile";
+import Tile from "./tiles/Tile";
 import { MazeObjectType } from "./enums";
 
 // This object represents a level in the game
@@ -106,9 +106,14 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
                 return false;
 
             // Get the object at that position
-            let object = this.objectTable.getObject(pos.x, pos.y);
+            let object = this.getObjectAt(pos);
 
-            return object === null || object.getType() !== MazeObjectType.Wall;
+            return object === null || !object.isSolid();
+        },
+
+        // Gets the object at a given position
+        getObjectAt(pos) {
+            return this.objectTable.getObject(pos.x, pos.y);
         }
     };
 

@@ -12,14 +12,7 @@ const Direction = {
     Down: 3
 }
 
-// Type of a maze object
-const MazeObjectType = {
-    Wall: 0,
-    Coin: 1
-}
-
 export {
     Direction,
-    GameState,
-    MazeObjectType
+    GameState
 }

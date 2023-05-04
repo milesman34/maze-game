@@ -1,9 +1,10 @@
 import Game from "./Game";
 import Level from "./Level";
 import Point from "./Point";
-import Tile from "./Tile";
-import { GameState, MazeObjectType } from "./enums";
+import { GameState } from "./enums";
 import * as constants from "./constants";
+import Wall from "./tiles/Wall";
+import Coin from "./tiles/Coin";
 
 // Initialize app
 window.app = new PIXI.Application({ width: constants.canvasSize, height: constants.canvasSize });
@@ -28,15 +29,11 @@ let level = Level.loadFromLayout(
         "AAAAAAAAAAA"
     ], 
     {
-        "A": Tile({
-            path: "./assets/tiles/standard_wall.png",
-            type: MazeObjectType.Wall
+        "A": Wall({
+            path: "./assets/tiles/standard_wall.png"
         }),
 
-        "C": Tile({
-            path: "./assets/tiles/coin.png",
-            type: MazeObjectType.Coin
-        })
+        "C": Coin()
     }, 
     {
         startPos: Point(1, 1)
