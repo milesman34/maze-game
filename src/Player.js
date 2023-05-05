@@ -1,5 +1,6 @@
 import Point from "./Point";
 import { Direction } from "./enums";
+import levels from "./levels/levels";
 
 let template = new PIXI.Graphics();
 
@@ -56,6 +57,11 @@ const Player = ({game, position, level = {}}) => {
             this.sprite = null;
         },
 
+        // Destroys the player
+        destroy() {
+            this.deleteSprite();
+        },
+
         // Moves the player in a direction
         move(direction) {
             const offset = directionOffsets[direction];
@@ -71,6 +77,14 @@ const Player = ({game, position, level = {}}) => {
 
                 if (object !== null)
                     object.handleCollision();
+
+                // Check if current position is an end position
+                if (this.level.isEndPosition(this.position)) {
+                    // Now we need to switch to the next level
+                    const nextPos = this.level.getEndPositionLocation(this.position);
+
+                    this.game.loadLevel(levels[nextPos.name], nextPos.position);
+                }
             }
         },
 

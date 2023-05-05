@@ -11,6 +11,11 @@ const Point = (x, y) => ({
     // Converts it to an array for destructuring
     toArray() {
         return [this.x, this.y];
+    },
+
+    // Converts to a string for checking arrays
+    toString() {
+        return `(${this.x}, ${this.y})`
     }
 });
 

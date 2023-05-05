@@ -2,11 +2,21 @@ import ObjectTable from "../ObjectTable";
 import Point from "../Point";
 import _ from "lodash";
 import * as constants from "../constants"
-import LevelTemplate from './LevelTemplate';
 
 // This object represents a level in the game
 // The level could handle drawing as well
-const Level = ({width = constants.numTiles, height = constants.numTiles, startPos = Point(0, 0), game = {}, scale = 1} = {}) => {
+const Level = ({
+    width = constants.numTiles, 
+    height = constants.numTiles,
+    
+    // While there can be multiple start positions, this is where the player will start by default if they aren't sent elsewhere
+    startPos = Point(0, 0), 
+    game = {}, 
+    scale = 1,
+
+    // Track end positions, mapping position to object of form (level name, position)
+    endPositions = {}
+} = {}) => {
     let object = {
         // Level dimensions
         width,
@@ -23,6 +33,9 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
 
         // Starting position
         startPos,
+
+        // List of end positions
+        endPositions,
 
         // Creates the 2D object array (for consistency, index with [x][y])
         objectTable: ObjectTable(width, height),
@@ -73,12 +86,6 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
 
         // Draws the level
         draw() {
-            // Set app stage offset
-            // let offset = this.getCenterOffset();
-
-            // app.stage.x = offset.x;
-            // app.stage.y = offset.y;
-
             app.stage.scale.set(this.scale, this.scale);
 
             this.objectTable.iterate((object, x, y) => {
@@ -86,6 +93,17 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
                     object.draw();
                 }
             });
+        },
+
+        // Destroys this level if needed
+        destroy() {
+            this.objectTable.iterate((object, x, y) => {
+                if (object !== null) {
+                    object.destroy();
+                }
+            });
+
+            this.game.getPlayer().destroy();
         },
 
         // Calculates the number of pixels wide the level is
@@ -134,6 +152,16 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         // Removes the object at a given position
         removeObjectAt(pos) {
             this.objectTable.removeObject(pos.x, pos.y);
+        },
+
+        // Returns if a given position is an end position
+        isEndPosition(pos) {
+            return pos.toString() in this.endPositions;
+        },
+
+        // Gets the corresponding position object that an end position leads to
+        getEndPositionLocation(pos) {
+            return this.endPositions[pos.toString()];
         }
     };
 

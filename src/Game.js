@@ -1,5 +1,6 @@
 import Player from "./Player";
 import { GameState } from "./enums";
+import Level from "./levels/Level";
 
 // This object handles the game state management
 const Game = state => {
@@ -34,14 +35,29 @@ const Game = state => {
         // Sets the current level
         setLevel(level) {
             this.level = level;
+        },
+
+        // Loads a level from a template
+        // Starting position can optionally be provided
+        loadLevel(levelTemplate, position = null) {
+            // Destroy old level if needed
+            if (this.level !== null) {
+                this.level.destroy();
+            }
+
+            let level = Level.loadFromTemplate(this, levelTemplate);
+
+            this.level = level;
 
             this.player = Player({
                 game: this,
-                position: this.level.getStartPos(),
+                position: position === null ? this.level.getStartPos() : position,
                 level: this.level
             });
 
             this.player.draw();
+
+            level.draw();
         },
 
         // Gets the current score
@@ -58,6 +74,11 @@ const Game = state => {
         // Adds to the current score
         addScore(amount) {
             this.setScore(this.score + amount);
+        },
+
+        // Gets the current player
+        getPlayer() {
+            return this.player;
         },
 
         // Gets the current center offset for the level
