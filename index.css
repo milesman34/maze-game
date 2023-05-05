@@ -27,7 +27,7 @@ html, body {
 
     grid-row: 1;
     grid-column: 1;
-    border: 2px solid white;
+    /* border: 2px solid white; */
 }
 
 #header-ui {

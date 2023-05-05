@@ -1,7 +1,8 @@
-import ObjectTable from "./ObjectTable";
-import Point from "./Point";
+import ObjectTable from "../ObjectTable";
+import Point from "../Point";
 import _ from "lodash";
-import * as constants from "./constants"
+import * as constants from "../constants"
+import LevelTemplate from './LevelTemplate';
 
 // This object represents a level in the game
 // The level could handle drawing as well
@@ -73,7 +74,7 @@ const Level = ({width = constants.numTiles, height = constants.numTiles, startPo
         // Draws the level
         draw() {
             // Set app stage offset
-            let offset = this.getCenterOffset();
+            // let offset = this.getCenterOffset();
 
             // app.stage.x = offset.x;
             // app.stage.y = offset.y;
@@ -146,6 +147,11 @@ Level.loadFromLayout = (game, stringArray, charMap, params) => {
     level.loadFromLayout(stringArray, charMap);
 
     return level;
+}
+
+// Loads a level from a template
+Level.loadFromTemplate = (game, levelTemplate) => {
+    return Level.loadFromLayout(game, levelTemplate.stringArray, levelTemplate.charMap, levelTemplate.params);
 }
 
 export default Level
