@@ -1,10 +1,30 @@
 import Player from "./Player";
+import { Point } from "./Point";
 import { GameState } from "./enums";
-import Level from "./levels/Level";
+import { Level } from "./levels/Level";
+import LevelTemplate from "./levels/LevelTemplate";
+
+type Game = {
+    state: GameState,
+    level: Level,
+    player: Player,
+    score: number,
+    getState: () => GameState,
+    setState: (state: GameState) => void,
+    getLevel: () => Level,
+    setLevel: (level: Level) => void,
+    loadLevel: (levelTemplate: LevelTemplate, position?: Point) => void,
+    getScore: () => number,
+    setScore: (score: number) => void,
+    addScore: (score: number) => void,
+    getPlayer: () => Player,
+    getCenterOffset: () => Point,
+    handleKeypress: (key: string) => void
+}
 
 // This object handles the game state management
-const Game = state => {
-    let object = {
+const Game = (state: GameState) => {
+    let object: Game = {
         // Current game state
         state,
 
@@ -18,28 +38,28 @@ const Game = state => {
         score: 0,
 
         // Gets the current game state
-        getState() {
+        getState(): GameState {
             return this.state;
         },
 
         // Sets the new game state
-        setState(state) {
+        setState(state: GameState) {
             this.state = state;
         },
 
         // Gets the current level
-        getLevel() {
+        getLevel(): Level {
             return this.level;
         },
 
         // Sets the current level
-        setLevel(level) {
+        setLevel(level: Level) {
             this.level = level;
         },
 
         // Loads a level from a template
         // Starting position can optionally be provided
-        loadLevel(levelTemplate, position = null) {
+        loadLevel(levelTemplate: LevelTemplate, position: Point = null) {
             // Destroy old level if needed
             if (this.level !== null) {
                 this.level.destroy();
@@ -61,33 +81,33 @@ const Game = state => {
         },
 
         // Gets the current score
-        getScore() {
+        getScore(): number {
             return this.score;
         },
 
         // Sets the current score
-        setScore(score) {
+        setScore(score: number) {
             this.score = score;
             $("#score-container").text(`Score: ${score}`);
         },
 
         // Adds to the current score
-        addScore(amount) {
+        addScore(amount: number) {
             this.setScore(this.score + amount);
         },
 
         // Gets the current player
-        getPlayer() {
+        getPlayer(): Player {
             return this.player;
         },
 
         // Gets the current center offset for the level
-        getCenterOffset() {
+        getCenterOffset(): Point {
             return this.level.getCenterOffset();
         },
 
         // Handles a keypress (pass event.key)
-        handleKeypress(key) {
+        handleKeypress(key: string) {
             if (this.state === GameState.Game) {
                 this.player.handleKeypress(key);
             }

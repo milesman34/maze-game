@@ -1,4 +1,4 @@
-import Point from "../Point";
+import { Point } from "../Point";
 import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
 import LevelTemplate from "./LevelTemplate";
 
@@ -10,7 +10,7 @@ const defCharmap = {
 }
 
 // This object maps a string/number to level objects
-const levels = {
+const levels: Record<string, LevelTemplate> = {
     "start": LevelTemplate(
         [
             "AAAAAAAAAA",

@@ -1,8 +1,34 @@
-import Point from "../Point";
+import Game from "../Game";
+import { Point } from "../Point";
+import * as PIXI from "pixi.js";
+import { Level } from "../levels/Level";
+import app from "../app";
 
 // This object represents a tile in the game
-const Tile = ({path, position = Point(0, 0), level = {}, solid = false, handleCollision = function() {}}) => {
-    let object = {
+type Tile = {
+    sprite: PIXI.Sprite,
+    position: Point,
+    game: Game,
+    level: Level,
+    solid: boolean,
+    isSolid: () => boolean,
+    handleCollision: () => void,
+    draw: () => void,
+    destroy: () => void
+}
+
+type TileParams = {
+    path: string,
+    position?: Point,
+    level?: Level,
+    solid?: boolean,
+    handleCollision?: () => void
+}
+
+const Tile = ({
+    path, position = Point(0, 0), level = null, solid = false, handleCollision = function() {}
+}: TileParams): Tile => {
+    let object: Tile = {
         // Track the current sprite
         sprite: null,
 
@@ -17,7 +43,7 @@ const Tile = ({path, position = Point(0, 0), level = {}, solid = false, handleCo
         // Is the object solid?
         solid,
         
-        isSolid() {
+        isSolid(): boolean {
             return this.solid;
         },
 

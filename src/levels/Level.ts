@@ -1,23 +1,72 @@
 import ObjectTable from "./ObjectTable";
-import Point from "../Point";
-import _ from "lodash";
+import { Point, PointString } from "../Point";
+import * as _ from "lodash";
 import * as constants from "../constants"
+import Game from "../Game";
+import Tile from "../tiles/Tile";
+import app from "../app";
+import LevelTemplate from "./LevelTemplate";
+
+// This type represents a link to another level
+type LevelLink = {
+    name: string,
+    position: Point
+}
+
+// This type represents a map from characters to level objects
+type LevelCharMap = Record<PointString, Tile>;
 
 // This object represents a level in the game
 // The level could handle drawing as well
+type Level = {
+    width: number,
+    height: number,
+    scale: number,
+    game: Game,
+    tileSize: number,
+    startPos: Point,
+    endPositions: Record<PointString, LevelLink>,
+    objectTable: ObjectTable,
+    getStartPos: () => Point,
+    getWidth: () => number,
+    getHeight: () => number,
+    setGame: (game: Game) => void,
+    loadFromLayout: (stringArray: Array<String>, charMap: LevelCharMap) => void,
+    draw: () => void,
+    destroy: () => void,
+    getPixelWidth: () => number,
+    getPixelHeight: () => number,
+    getCenterOffset: () => Point,
+    calculatePosition: (pos: Point) => Point,
+    isPositionValid: (pos: Point) => boolean,
+    getObjectAt: (pos: Point) => Tile,
+    removeObjectAt: (pos: Point) => void,
+    isEndPosition: (pos: Point) => boolean,
+    getLevelLinkAt: (pos: Point) => LevelLink
+}
+
+type LevelParams = {
+    width?: number,
+    height?: number,
+    startPos?: Point,
+    game?: Game,
+    scale?: number,
+    endPositions?: Record<PointString, LevelLink>
+}
+
 const Level = ({
     width = constants.numTiles, 
     height = constants.numTiles,
     
     // While there can be multiple start positions, this is where the player will start by default if they aren't sent elsewhere
     startPos = Point(0, 0), 
-    game = {}, 
+    game = null, 
     scale = 1,
 
     // Track end positions, mapping position to object of form (level name, position)
     endPositions = {}
-} = {}) => {
-    let object = {
+} = {}): Level => {
+    let object: Level = {
         // Level dimensions
         width,
         height,
@@ -41,27 +90,27 @@ const Level = ({
         objectTable: ObjectTable(width, height),
 
         // Gets the player's starting position
-        getStartPos() {
+        getStartPos(): Point {
             return this.startPos;
         },
 
         // Gets the width of the level
-        getWidth() {
+        getWidth(): number {
             return this.width;
         },
 
         // Gets the height of the level
-        getHeight() {
+        getHeight(): number {
             return this.height;
         },
 
         // Sets the game
-        setGame(game) {
+        setGame(game: Game) {
             this.game = game;
         },
 
         // Sets up a maze based on an array of strings that maps out the layout + an object that maps characters to game objects
-        loadFromLayout(stringArray, charMap) {
+        loadFromLayout(stringArray: Array<string>, charMap: LevelCharMap) {
             // Reset object table if dimensions are off
             if (stringArray[0].length != this.width || stringArray.length != this.height) {
                 this.width = stringArray[0].length;
@@ -88,7 +137,7 @@ const Level = ({
         draw() {
             app.stage.scale.set(this.scale, this.scale);
 
-            this.objectTable.iterate((object, x, y) => {
+            this.objectTable.iterate((object: Tile, x: number, y: number) => {
                 if (object !== null) {
                     object.draw();
                 }
@@ -97,7 +146,7 @@ const Level = ({
 
         // Destroys this level if needed
         destroy() {
-            this.objectTable.iterate((object, x, y) => {
+            this.objectTable.iterate((object: Tile, x: number, y: number) => {
                 if (object !== null) {
                     object.destroy();
                 }
@@ -107,17 +156,17 @@ const Level = ({
         },
 
         // Calculates the number of pixels wide the level is
-        getPixelWidth() {
+        getPixelWidth(): number {
             return this.width * this.tileSize;
         },
 
         // Calculates the number of pixels high the level is
-        getPixelHeight() {
+        getPixelHeight(): number {
             return this.height * this.tileSize;
         },
 
         // Calculates the offset needed to center the drawn level
-        getCenterOffset() {
+        getCenterOffset(): Point {
             return Point(
                 Math.round((constants.canvasSize - this.getPixelWidth()) / 2),
                 Math.round((constants.canvasSize - this.getPixelHeight()) / 2),
@@ -125,7 +174,7 @@ const Level = ({
         },
 
         // Calculates the position of an object adjusted to tileSize
-        calculatePosition(pos) {
+        calculatePosition(pos: Point): Point {
             return Point(
                 pos.x * this.tileSize,
                 pos.y * this.tileSize
@@ -133,7 +182,7 @@ const Level = ({
         },
 
         // Checks if a position is valid for this level
-        isPositionValid(pos) {
+        isPositionValid(pos: Point): boolean {
             // Check if position is out of bounds
             if (pos.x < 0 || pos.x >= this.width || pos.y < 0 || pos.y >= this.height)
                 return false;
@@ -145,22 +194,22 @@ const Level = ({
         },
 
         // Gets the object at a given position
-        getObjectAt(pos) {
+        getObjectAt(pos: Point): Tile {
             return this.objectTable.getObject(pos.x, pos.y);
         },
 
         // Removes the object at a given position
-        removeObjectAt(pos) {
+        removeObjectAt(pos: Point) {
             this.objectTable.removeObject(pos.x, pos.y);
         },
 
         // Returns if a given position is an end position
-        isEndPosition(pos) {
+        isEndPosition(pos: Point): boolean {
             return pos.toString() in this.endPositions;
         },
 
-        // Gets the corresponding position object that an end position leads to
-        getEndPositionLocation(pos) {
+        // Gets the link to the next level based on an end position
+        getLevelLinkAt(pos: Point): LevelLink {
             return this.endPositions[pos.toString()];
         }
     };
@@ -169,7 +218,7 @@ const Level = ({
 };
 
 // Loads a level from a layout (supports extra parameters)
-Level.loadFromLayout = (game, stringArray, charMap, params) => {
+Level.loadFromLayout = (game: Game, stringArray: Array<string>, charMap: LevelCharMap, params: LevelParams) => {
     let level = Level({...params, game});
 
     level.loadFromLayout(stringArray, charMap);
@@ -178,8 +227,13 @@ Level.loadFromLayout = (game, stringArray, charMap, params) => {
 }
 
 // Loads a level from a template
-Level.loadFromTemplate = (game, levelTemplate) => {
+Level.loadFromTemplate = (game: Game, levelTemplate: LevelTemplate) => {
     return Level.loadFromLayout(game, levelTemplate.stringArray, levelTemplate.charMap, levelTemplate.params);
 }
 
-export default Level
+export {
+    LevelLink,
+    Level,
+    LevelCharMap,
+    LevelParams
+}

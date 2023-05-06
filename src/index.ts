@@ -1,12 +1,11 @@
 import Game from "./Game";
 import { GameState } from "./enums";
-import * as constants from "./constants";
 import levels from "./levels/levels";
+import * as $ from "jquery";
+import app from "./app";
 
-// Initialize app
-window.app = new PIXI.Application({ width: constants.canvasSize, height: constants.canvasSize });
-
-$("#canvas-container").append(app.view);
+// Sets up app
+$("#canvas-container").append(app.view as any);
 
 // Sets up the game
 let game = Game(GameState.Game);

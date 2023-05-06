@@ -1,6 +1,10 @@
-import Point from "./Point";
+import Game from "./Game";
+import { Point } from "./Point";
+import app from "./app";
 import { Direction } from "./enums";
+import { Level } from "./levels/Level";
 import levels from "./levels/levels";
+import * as PIXI from "pixi.js";
 
 let template = new PIXI.Graphics();
 
@@ -16,8 +20,26 @@ const directionOffsets = {
 }
 
 // This object represents the player
-const Player = ({game, position, level = {}}) => {
-    let object = {
+type Player = {
+    game: Game,
+    level: Level,
+    position: Point,
+    sprite: PIXI.Sprite,
+    draw: () => void,
+    deleteSprite: () => void,
+    destroy: () => void,
+    move: (direction: Direction) => void,
+    handleKeypress: (key: string) => void
+}
+
+type PlayerParams = {
+    game: Game,
+    level?: Level,
+    position: Point
+}
+
+const Player = ({game, position, level = null}: PlayerParams) => {
+    let object: Player = {
         // Link to game object
         game,
         
@@ -64,13 +86,16 @@ const Player = ({game, position, level = {}}) => {
 
         // Moves the player in a direction
         move(direction) {
+            if (this.level === null)
+                return;
+
             const offset = directionOffsets[direction];
             const newPosition = this.position.add(offset);
 
             // Check if current position is an end position
             if (this.level.isEndPosition(newPosition)) {
                 // Now we need to switch to the next level
-                const nextPos = this.level.getEndPositionLocation(newPosition);
+                const nextPos = this.level.getLevelLinkAt(newPosition);
 
                 this.game.loadLevel(levels[nextPos.name], nextPos.position);
 
