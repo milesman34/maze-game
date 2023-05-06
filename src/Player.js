@@ -67,20 +67,20 @@ const Player = ({game, position, level = {}}) => {
             const offset = directionOffsets[direction];
             const newPosition = this.position.add(offset);
 
+            // Check if current position is an end position
+            if (this.level.isEndPosition(newPosition)) {
+                // Now we need to switch to the next level
+                const nextPos = this.level.getEndPositionLocation(newPosition);
+
+                this.game.loadLevel(levels[nextPos.name], nextPos.position);
+
+                return;
+            }
+
             if (this.level.isPositionValid(newPosition)) {
                 this.deleteSprite();
                 this.position = this.position.add(offset);
                 this.draw();
-
-                // Check if current position is an end position
-                if (this.level.isEndPosition(this.position)) {
-                    // Now we need to switch to the next level
-                    const nextPos = this.level.getEndPositionLocation(this.position);
-
-                    this.game.loadLevel(levels[nextPos.name], nextPos.position);
-
-                    return;
-                }
 
                 // Gets the object at that position and handles collision aspects
                 let object = this.level.getObjectAt(this.position);

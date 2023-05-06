@@ -1,4 +1,4 @@
-import { gen2DArray } from "./utils";
+import { gen2DArray } from "../utils";
 
 // This object represents a table of objects, indexed with [x][y]
 const ObjectTable = (width, height, defaultItem=null) => ({
