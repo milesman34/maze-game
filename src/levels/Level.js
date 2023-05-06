@@ -134,6 +134,10 @@ const Level = ({
 
         // Checks if a position is valid for this level
         isPositionValid(pos) {
+            // It is valid if it is an end position
+            if (this.isEndPosition(pos))
+                return true;
+
             // Check if position is out of bounds
             if (pos.x < 0 || pos.x >= this.width || pos.y < 0 || pos.y >= this.height)
                 return false;

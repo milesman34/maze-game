@@ -72,19 +72,21 @@ const Player = ({game, position, level = {}}) => {
                 this.position = this.position.add(offset);
                 this.draw();
 
-                // Gets the object at that position and handles collision aspects
-                let object = this.level.getObjectAt(this.position);
-
-                if (object !== null)
-                    object.handleCollision();
-
                 // Check if current position is an end position
                 if (this.level.isEndPosition(this.position)) {
                     // Now we need to switch to the next level
                     const nextPos = this.level.getEndPositionLocation(this.position);
 
                     this.game.loadLevel(levels[nextPos.name], nextPos.position);
+
+                    return;
                 }
+
+                // Gets the object at that position and handles collision aspects
+                let object = this.level.getObjectAt(this.position);
+
+                if (object !== null)
+                    object.handleCollision();
             }
         },
 

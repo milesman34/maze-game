@@ -29,7 +29,7 @@ const levels = {
             startPos: Point(1, 1),
             scale: 2,
             endPositions: {
-                "(8, 9)": {
+                "(8, 10)": {
                     name: "level2",
                     position: Point(8, 0)
                 }
@@ -55,9 +55,14 @@ const levels = {
             startPos: Point(8, 0),
             scale: 2,
             endPositions: {
-                "(4, 9)": {
+                "(4, 10)": {
                     name: "level3",
                     position: Point(4, 0)
+                },
+                
+                "(8, -1)": {
+                    name: "start",
+                    position: Point(8, 9)
                 }
             } 
         }
@@ -79,7 +84,13 @@ const levels = {
         defCharmap,
         {
             startPos: Point(4, 0),
-            scale: 2 
+            scale: 2 ,
+            endPositions: {
+                "(4, -1)": {
+                    name: "level2",
+                    position: Point(4, 9)
+                }
+            }
         }
     )
 }
