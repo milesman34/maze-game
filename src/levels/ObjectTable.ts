@@ -1,12 +1,20 @@
 import Tile from "../tiles/Tile";
 import { gen2DArray } from "../utils";
 
+type IterateFunction = (object: Tile, x: number, y: number) => void;
+
 type ObjectTable = {
-    table: Array<Array<Tile>>
+    table: Array<Array<Tile>>,
+    getObject: (x: number, y: number) => Tile,
+    getObjectWithRow: (row: number, col: number) => Tile,
+    setObject: (x: number, y: number, object: Tile) => void,
+    setObjectWithRow: (row: number, col: number, object: Tile) => void,
+    removeObject: (x: number, y: number) => void,
+    iterate: (fn: IterateFunction) => void
 }
 
 // This object represents a table of objects, indexed with [x][y]
-const ObjectTable = (width: number, height: number, defaultItem: Tile=null) => ({
+const ObjectTable = (width: number, height: number, defaultItem: Tile=null): ObjectTable => ({
     table: gen2DArray(width, height, defaultItem),
 
     // Gets the object at a given position
@@ -35,7 +43,7 @@ const ObjectTable = (width: number, height: number, defaultItem: Tile=null) => (
     },
 
     // Iterates over the object table using a function (that accepts parameters object, x, y)
-    iterate(fn: (object: Tile, x: number, y: number) => void) {
+    iterate(fn: IterateFunction) {
         this.table.forEach((row: Array<Tile>, x: number) => {
             row.forEach((col: Tile, y: number) => {
                 fn(col, x, y);

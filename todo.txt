@@ -1,4 +1,10 @@
-Consider switching to TypeScript
-Add some way to store multiple levels and link them together
-Add ways to go from 1 level to another (will be a bit more complicated)
+Add key/lock system (may require ways to color an object dynamically), probably will be exclusive to each screen
 Add energy system eventually?
+
+Key/lock system could have each level keep track of the position of keys and their colors (which will be important, maybe link to constants, generate key textures)
+For keys, use some sort of record that links key colors (name of color?) to a list of key positions, so one color can have multiple keys
+For locks, use some sort of record that links key colors to a list of lock positions, when the required key is collected the locks are all removed
+
+Yeah, mapping keys/locks based off their color seems like the best call here
+
+If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock

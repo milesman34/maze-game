@@ -65,7 +65,7 @@ const Level = ({
 
     // Track end positions, mapping position to object of form (level name, position)
     endPositions = {}
-} = {}): Level => {
+}: LevelParams = {}): Level => {
     let object: Level = {
         // Level dimensions
         width,
@@ -157,12 +157,12 @@ const Level = ({
 
         // Calculates the number of pixels wide the level is
         getPixelWidth(): number {
-            return this.width * this.tileSize;
+            return this.width * this.tileSize * this.scale;
         },
 
         // Calculates the number of pixels high the level is
         getPixelHeight(): number {
-            return this.height * this.tileSize;
+            return this.height * this.tileSize * this.scale;
         },
 
         // Calculates the offset needed to center the drawn level
