@@ -33,7 +33,7 @@ type Level = {
     setGame: (game: Game) => void,
     loadFromLayout: (stringArray: Array<String>, charMap: LevelCharMap) => void,
     draw: () => void,
-    destroy: () => void,
+    unload: () => void,
     getPixelWidth: () => number,
     getPixelHeight: () => number,
     getCenterOffset: () => Point,
@@ -144,8 +144,8 @@ const Level = ({
             });
         },
 
-        // Destroys this level if needed
-        destroy() {
+        // Unloads the level
+        unload() {
             this.objectTable.iterate((object: Tile, x: number, y: number) => {
                 if (object !== null) {
                     object.deleteSprite();

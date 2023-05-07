@@ -64,9 +64,9 @@ const Game = (state: GameState) => {
         // Loads a level from a template
         // Starting position can optionally be provided
         loadLevel(levelTemplate: LevelTemplate, position: Point = null) {
-            // Destroy old level if needed
+            // Unloads old level if needed
             if (this.level !== null) {
-                this.level.destroy();
+                this.level.unload();
             }
 
             const levelName = levelTemplate.getName();
