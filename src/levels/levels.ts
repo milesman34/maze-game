@@ -12,6 +12,7 @@ const defCharmap = {
 // This object maps a string/number to level objects
 const levels: Record<string, LevelTemplate> = {
     "start": LevelTemplate(
+        "start",
         [
             "AAAAAAAAAA",
             "A AAAAAAAA",
@@ -38,6 +39,7 @@ const levels: Record<string, LevelTemplate> = {
     ),
 
     "level2": LevelTemplate(
+        "level2",
         [
             "AAAAAAAA A",
             "AAA      A",
@@ -69,6 +71,7 @@ const levels: Record<string, LevelTemplate> = {
     ),
 
     "level3": LevelTemplate(
+        "level3",
         [
             "AAAA AAAAA",
             "A        A",

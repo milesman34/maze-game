@@ -148,11 +148,11 @@ const Level = ({
         destroy() {
             this.objectTable.iterate((object: Tile, x: number, y: number) => {
                 if (object !== null) {
-                    object.destroy();
+                    object.deleteSprite();
                 }
             });
 
-            this.game.getPlayer().destroy();
+            this.game.getPlayer().deleteSprite();
         },
 
         // Calculates the number of pixels wide the level is

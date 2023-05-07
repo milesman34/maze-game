@@ -9,6 +9,7 @@ type Game = {
     level: Level,
     player: Player,
     score: number,
+    levelMap: Record<string, Level>,
     getState: () => GameState,
     setState: (state: GameState) => void,
     getLevel: () => Level,
@@ -36,6 +37,9 @@ const Game = (state: GameState) => {
 
         // Current score
         score: 0,
+
+        // Maps level names to loaded levels
+        levelMap: {},
 
         // Gets the current game state
         getState(): GameState {
@@ -65,9 +69,14 @@ const Game = (state: GameState) => {
                 this.level.destroy();
             }
 
-            let level = Level.loadFromTemplate(this, levelTemplate);
+            const levelName = levelTemplate.getName();
 
-            this.level = level;
+            if (levelName in this.levelMap) {
+                this.level = this.levelMap[levelName];
+            } else {
+                this.level = Level.loadFromTemplate(this, levelTemplate);
+                this.levelMap[levelName] = this.level;
+            }
 
             this.player = Player({
                 game: this,
@@ -77,7 +86,7 @@ const Game = (state: GameState) => {
 
             this.player.draw();
 
-            level.draw();
+            this.level.draw();
         },
 
         // Gets the current score

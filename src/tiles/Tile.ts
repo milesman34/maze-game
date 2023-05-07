@@ -14,6 +14,7 @@ type Tile = {
     isSolid: () => boolean,
     handleCollision: () => void,
     draw: () => void,
+    deleteSprite: () => void,
     destroy: () => void
 }
 
@@ -67,14 +68,19 @@ const Tile = ({
             this.sprite = sprite;
         },
 
-        // Destroys the object
-        destroy() {
+        // Deletes the object's sprite
+        deleteSprite() {
             if (this.sprite === null)
                 return;
 
             app.stage.removeChild(this.sprite);
             this.sprite.destroy();
             this.sprite = null;
+        },
+
+        // Destroys the object
+        destroy() {
+            this.deleteSprite();
 
             this.level.removeObjectAt(this.position);
         }
