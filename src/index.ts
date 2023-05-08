@@ -1,8 +1,8 @@
 import Game from "./game/Game";
 import { GameState } from "./enums";
-import rooms from "./game/rooms/rooms";
 import * as $ from "jquery";
 import app from "./app";
+import levels from "./game/levels/levels";
 
 // Sets up app
 $("#canvas-container").append(app.view as any);
@@ -11,7 +11,7 @@ $("#canvas-container").append(app.view as any);
 let game = Game(GameState.Game);
 
 // Sets the room for the game
-game.loadRoom(rooms.start);
+game.loadLevel(levels.level1);
 
 // Add keypress event listener
 document.addEventListener("keydown", event => {

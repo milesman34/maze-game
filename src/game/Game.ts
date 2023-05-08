@@ -1,25 +1,18 @@
-import Player from "./Player";
-import { Point } from "../Point";
 import { GameState } from "../enums";
-import { Room } from "./rooms/Room";
-import RoomTemplate from "./rooms/RoomTemplate";
+import Player from "./Player";
+import Level from "./levels/Level";
+import { LevelTemplate } from "./levels/LevelTemplate";
 
 type Game = {
     state: GameState,
-    room: Room,
+    level: Level,
     player: Player,
-    score: number,
-    roomMap: Record<string, Room>,
+    setPlayer: (player: Player) => void,
+    getLevel: () => Level,
+    setLevel: (level: Level) => void,
+    loadLevel: (template: LevelTemplate) => void,
     getState: () => GameState,
     setState: (state: GameState) => void,
-    getRoom: () => Room,
-    setRoom: (room: Room) => void,
-    loadRoom: (roomTemplate: RoomTemplate, position?: Point) => void,
-    getScore: () => number,
-    setScore: (score: number) => void,
-    addScore: (score: number) => void,
-    getPlayer: () => Player,
-    getCenterOffset: () => Point,
     handleKeypress: (key: string) => void
 }
 
@@ -29,17 +22,36 @@ const Game = (state: GameState) => {
         // Current game state
         state,
 
-        // Current room
-        room: null,
+        // Current level
+        level: null,
 
-        // Player object
+        // Reference to player
         player: null,
 
-        // Current score
-        score: 0,
+        // Sets the player
+        setPlayer(player: Player) {
+            this.player = player;
+        },
 
-        // Maps room names to loaded rooms
-        roomMap: {},
+        // Gets the current level
+        getLevel(): Level {
+            return this.level;
+        },
+
+        // Sets the current level
+        setLevel(level: Level) {
+            this.level = level;
+        },
+
+        // Loads a level based on a template
+        loadLevel(template: LevelTemplate) {
+            this.level = Level({
+                game: this,
+                ...template
+            });
+
+            this.level.load();
+        },
 
         // Gets the current game state
         getState(): GameState {
@@ -51,70 +63,6 @@ const Game = (state: GameState) => {
             this.state = state;
         },
 
-        // Gets the current room
-        getRoom(): Room {
-            return this.room;
-        },
-
-        // Sets the current room
-        setRoom(room: Room) {
-            this.room = room;
-        },
-
-        // Loads a room from a template
-        // Starting position can optionally be provided
-        loadRoom(roomTemplate: RoomTemplate, position: Point = null) {
-            // Unloads old room if needed
-            if (this.room !== null) {
-                this.room.unload();
-            }
-
-            const roomName = roomTemplate.getName();
-
-            if (roomName in this.roomMap) {
-                this.room = this.roomMap[roomName];
-            } else {
-                this.room = Room.loadFromTemplate(this, roomTemplate);
-                this.roomMap[roomName] = this.room;
-            }
-
-            this.player = Player({
-                game: this,
-                position: position === null ? this.room.getStartPos() : position,
-                room: this.room
-            });
-
-            this.player.draw();
-
-            this.room.draw();
-        },
-
-        // Gets the current score
-        getScore(): number {
-            return this.score;
-        },
-
-        // Sets the current score
-        setScore(score: number) {
-            this.score = score;
-            $("#score-container").text(`Score: ${score}`);
-        },
-
-        // Adds to the current score
-        addScore(amount: number) {
-            this.setScore(this.score + amount);
-        },
-
-        // Gets the current player
-        getPlayer(): Player {
-            return this.player;
-        },
-
-        // Gets the current center offset for the room
-        getCenterOffset(): Point {
-            return this.room.getCenterOffset();
-        },
-
         // Handles a keypress (pass event.key)
         handleKeypress(key: string) {
             if (this.state === GameState.Game) {
@@ -122,8 +70,6 @@ const Game = (state: GameState) => {
             }
         }
     }
-
-    object.setScore(0);
 
     return object;
 };

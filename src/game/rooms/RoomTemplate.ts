@@ -1,5 +1,8 @@
 import { RoomCharMap, RoomParams } from "./Room";
 
+// This type represents a collection of rooms mapped via their names
+type RoomCollection = Record<string, RoomTemplate>
+
 // This object represents a template for a room to be created with the Room.loadFromTemplate function
 type RoomTemplate = {
     name: string,
@@ -28,8 +31,8 @@ const RoomTemplate = ({name, stringArray, charMap, params}: RoomTemplateParams):
 });
 
 // Makes a series of room template
-RoomTemplate.makeTemplates = (templates: Array<RoomTemplateParams>): Record<string, RoomTemplate> => {
-    let result: Record<string, RoomTemplate> = {};
+RoomTemplate.makeTemplates = (templates: Array<RoomTemplateParams>): RoomCollection => {
+    let result: RoomCollection = {};
 
     templates.forEach(param => {
         result[param.name] = RoomTemplate(param);
@@ -38,4 +41,4 @@ RoomTemplate.makeTemplates = (templates: Array<RoomTemplateParams>): Record<stri
     return result;
 }
 
-export default RoomTemplate;
+export { RoomTemplate, RoomCollection };

@@ -8,7 +8,7 @@ import app from "../../app";
 type Tile = {
     sprite: PIXI.Sprite,
     position: Point,
-    game: Game,
+    level: Game,
     room: Room,
     solid: boolean,
     isSolid: () => boolean,
@@ -36,15 +36,15 @@ const Tile = ({
         // Current position
         position,
 
-        // Reference to the game/room
-        game: null,
+        // Reference to the level/room
+        level: null,
 
         room,
 
         // Is the object solid?
         solid,
         
-        isSolid() {
+        isSolid(): boolean {
             return this.solid;
         },
 

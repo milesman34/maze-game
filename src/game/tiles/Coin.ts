@@ -17,7 +17,7 @@ const Coin = ({room = null, path, score=1}: CoinParams): Coin => {
         solid: false, 
 
         handleCollision() {
-            this.game.addScore(score);
+            this.level.addScore(score);
             this.destroy();
         }
     });

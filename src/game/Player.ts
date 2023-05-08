@@ -1,10 +1,9 @@
-import Game from "./Game";
 import { Point } from "../Point";
 import app from "../app";
 import { Direction } from "../enums";
 import { Room } from "./rooms/Room";
-import rooms from "./rooms/rooms";
 import * as PIXI from "pixi.js";
+import Level from "./levels/Level";
 
 let template = new PIXI.Graphics();
 
@@ -21,7 +20,7 @@ const directionOffsets = {
 
 // This object represents the player
 type Player = {
-    game: Game,
+    level: Level,
     room: Room,
     position: Point,
     sprite: PIXI.Sprite,
@@ -33,15 +32,15 @@ type Player = {
 }
 
 type PlayerParams = {
-    game: Game,
+    level?: Level,
     room?: Room,
     position: Point
 }
 
-const Player = ({game, position, room = null}: PlayerParams) => {
+const Player = ({position, level = null, room = null}: PlayerParams) => {
     let object: Player = {
-        // Link to game object
-        game,
+        // Link to level object
+        level,
         
         // Link to room object
         room,
@@ -97,7 +96,7 @@ const Player = ({game, position, room = null}: PlayerParams) => {
                 // Now we need to switch to the next room
                 const nextPos = this.room.getRoomLinkAt(newPosition);
 
-                this.game.loadRoom(rooms[nextPos.name], nextPos.position);
+                this.level.loadRoom(nextPos);
 
                 return;
             }

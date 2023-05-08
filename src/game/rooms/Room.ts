@@ -5,7 +5,8 @@ import * as constants from "../../constants"
 import Game from "../Game";
 import Tile from "../tiles/Tile";
 import app from "../../app";
-import RoomTemplate from "./RoomTemplate";
+import { RoomTemplate } from "./RoomTemplate";
+import Level from "../levels/Level";
 
 // This type represents a link to another room
 type RoomLink = {
@@ -22,7 +23,7 @@ type Room = {
     width: number,
     height: number,
     scale: number,
-    game: Game,
+    level: Level,
     tileSize: number,
     startPos: Point,
     endPositions: Record<PointString, RoomLink>,
@@ -30,7 +31,6 @@ type Room = {
     getStartPos: () => Point,
     getWidth: () => number,
     getHeight: () => number,
-    setGame: (game: Game) => void,
     loadFromLayout: (stringArray: Array<String>, charMap: RoomCharMap) => void,
     draw: () => void,
     unload: () => void,
@@ -49,7 +49,7 @@ type RoomParams = {
     width?: number,
     height?: number,
     startPos?: Point,
-    game?: Game,
+    level?: Level,
     scale?: number,
     endPositions?: Record<PointString, RoomLink>
 }
@@ -60,7 +60,7 @@ const Room = ({
     
     // While there can be multiple start positions, this is where the player will start by default if they aren't sent elsewhere
     startPos = Point(0, 0), 
-    game = null, 
+    level = null,
     scale = 1,
 
     // Track end positions, mapping position to object of form (room name, position)
@@ -74,8 +74,8 @@ const Room = ({
         // Scale of the room
         scale,
 
-        // Reference to the game
-        game,
+        // Reference to the level
+        level,
 
         // Tile size
         tileSize: constants.tileSize,
@@ -104,11 +104,6 @@ const Room = ({
             return this.height;
         },
 
-        // Sets the game
-        setGame(game: Game) {
-            this.game = game;
-        },
-
         // Sets up a maze based on an array of strings that maps out the layout + an object that maps characters to game objects
         loadFromLayout(stringArray: Array<string>, charMap: RoomCharMap) {
             // Reset object table if dimensions are off
@@ -125,7 +120,7 @@ const Room = ({
                     // The character maps to something in the map, so we know the given object exists there
                     if (char in charMap) {
                         // We need to find a better way to handle making sure its a unique object, maybe a dedicated copy function which can handle arrays or objects
-                        let newObject = {..._.cloneDeep(charMap[char]), room: this, game: this.game, position: Point(col, row)};
+                        let newObject = {..._.cloneDeep(charMap[char]), room: this, level: this.level, position: Point(col, row)};
 
                         this.objectTable.setObjectWithRow(row, col, newObject);
                     }
@@ -152,7 +147,7 @@ const Room = ({
                 }
             });
 
-            this.game.getPlayer().deleteSprite();
+            this.level.getPlayer().deleteSprite();
         },
 
         // Calculates the number of pixels wide the room is
@@ -218,8 +213,8 @@ const Room = ({
 };
 
 // Loads a room from a layout (supports extra parameters)
-Room.loadFromLayout = (game: Game, stringArray: Array<string>, charMap: RoomCharMap, params: RoomParams) => {
-    let room = Room({...params, game});
+Room.loadFromLayout = (level: Level, stringArray: Array<string>, charMap: RoomCharMap, params: RoomParams): Room => {
+    let room = Room({...params, level});
 
     room.loadFromLayout(stringArray, charMap);
 
@@ -227,8 +222,8 @@ Room.loadFromLayout = (game: Game, stringArray: Array<string>, charMap: RoomChar
 }
 
 // Loads a room from a template
-Room.loadFromTemplate = (game: Game, roomTemplate: RoomTemplate) => {
-    return Room.loadFromLayout(game, roomTemplate.stringArray, roomTemplate.charMap, roomTemplate.params);
+Room.loadFromTemplate = (level: Level, roomTemplate: RoomTemplate): Room => {
+    return Room.loadFromLayout(level, roomTemplate.stringArray, roomTemplate.charMap, roomTemplate.params);
 }
 
 export {
