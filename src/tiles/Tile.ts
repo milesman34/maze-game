@@ -1,7 +1,7 @@
 import Game from "../Game";
 import { Point } from "../Point";
 import * as PIXI from "pixi.js";
-import { Level } from "../levels/Level";
+import { Room } from "../rooms/Room";
 import app from "../app";
 
 // This object represents a tile in the game
@@ -9,7 +9,7 @@ type Tile = {
     sprite: PIXI.Sprite,
     position: Point,
     game: Game,
-    level: Level,
+    room: Room,
     solid: boolean,
     isSolid: () => boolean,
     handleCollision: () => void,
@@ -21,13 +21,13 @@ type Tile = {
 type TileParams = {
     path: string,
     position?: Point,
-    level?: Level,
+    room?: Room,
     solid?: boolean,
     handleCollision?: () => void
 }
 
 const Tile = ({
-    path, position = Point(0, 0), level = null, solid = false, handleCollision = function() {}
+    path, position = Point(0, 0), room = null, solid = false, handleCollision = function() {}
 }: TileParams): Tile => {
     let object: Tile = {
         // Track the current sprite
@@ -36,10 +36,10 @@ const Tile = ({
         // Current position
         position,
 
-        // Reference to the game/level
+        // Reference to the game/room
         game: null,
 
-        level,
+        room,
 
         // Is the object solid?
         solid,
@@ -58,7 +58,7 @@ const Tile = ({
 
             let sprite = PIXI.Sprite.from(path);
 
-            let position = this.level.calculatePosition(this.position);
+            let position = this.room.calculatePosition(this.position);
 
             sprite.x = position.x;
             sprite.y = position.y;
@@ -82,7 +82,7 @@ const Tile = ({
         destroy() {
             this.deleteSprite();
 
-            this.level.removeObjectAt(this.position);
+            this.room.removeObjectAt(this.position);
         }
     }
 

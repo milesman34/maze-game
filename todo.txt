@@ -7,4 +7,7 @@ For locks, use some sort of record that links key colors to a list of lock posit
 
 Yeah, mapping keys/locks based off their color seems like the best call here
 
-If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock
+If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock, and they display how many more keys of that color are required
+
+One thing I could do instead of the current system is to have level maps, which are collections of levels you can go through, and have keys/locks be global to those level maps. This may be better for puzzle design.
+Or some other name for level map: Maybe rename the current Level system to Rooms, and the Level is a collection of Rooms that the player can go through.

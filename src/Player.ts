@@ -2,8 +2,8 @@ import Game from "./Game";
 import { Point } from "./Point";
 import app from "./app";
 import { Direction } from "./enums";
-import { Level } from "./levels/Level";
-import levels from "./levels/levels";
+import { Room } from "./rooms/Room";
+import rooms from "./rooms/rooms";
 import * as PIXI from "pixi.js";
 
 let template = new PIXI.Graphics();
@@ -22,7 +22,7 @@ const directionOffsets = {
 // This object represents the player
 type Player = {
     game: Game,
-    level: Level,
+    room: Room,
     position: Point,
     sprite: PIXI.Sprite,
     draw: () => void,
@@ -34,17 +34,17 @@ type Player = {
 
 type PlayerParams = {
     game: Game,
-    level?: Level,
+    room?: Room,
     position: Point
 }
 
-const Player = ({game, position, level = null}: PlayerParams) => {
+const Player = ({game, position, room = null}: PlayerParams) => {
     let object: Player = {
         // Link to game object
         game,
         
-        // Link to level object
-        level,
+        // Link to room object
+        room,
 
         // Current player position
         position,
@@ -59,7 +59,7 @@ const Player = ({game, position, level = null}: PlayerParams) => {
 
             let sprite = new PIXI.Graphics(template.geometry);
 
-            let position = this.level.calculatePosition(this.position);
+            let position = this.room.calculatePosition(this.position);
 
             sprite.x = position.x;
             sprite.y = position.y;
@@ -86,29 +86,29 @@ const Player = ({game, position, level = null}: PlayerParams) => {
 
         // Moves the player in a direction
         move(direction) {
-            if (this.level === null)
+            if (this.room === null)
                 return;
 
             const offset = directionOffsets[direction];
             const newPosition = this.position.add(offset);
 
             // Check if current position is an end position
-            if (this.level.isEndPosition(newPosition)) {
-                // Now we need to switch to the next level
-                const nextPos = this.level.getLevelLinkAt(newPosition);
+            if (this.room.isEndPosition(newPosition)) {
+                // Now we need to switch to the next room
+                const nextPos = this.room.getRoomLinkAt(newPosition);
 
-                this.game.loadLevel(levels[nextPos.name], nextPos.position);
+                this.game.loadRoom(rooms[nextPos.name], nextPos.position);
 
                 return;
             }
 
-            if (this.level.isPositionValid(newPosition)) {
+            if (this.room.isPositionValid(newPosition)) {
                 this.deleteSprite();
                 this.position = this.position.add(offset);
                 this.draw();
 
                 // Gets the object at that position and handles collision aspects
-                let object = this.level.getObjectAt(this.position);
+                let object = this.room.getObjectAt(this.position);
 
                 if (object !== null)
                     object.handleCollision();

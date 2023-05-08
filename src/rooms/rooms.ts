@@ -1,6 +1,6 @@
 import { Point } from "../Point";
 import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
-import LevelTemplate from "./LevelTemplate";
+import RoomTemplate from "./RoomTemplate";
 
 // Default charmap
 const defCharMap = {
@@ -9,8 +9,8 @@ const defCharMap = {
     "C": standardCoin
 }
 
-// This object maps a string/number to level objects
-const levels = LevelTemplate.makeTemplates([
+// This object maps a string/number to room objects
+const rooms = RoomTemplate.makeTemplates([
     {
         name: "start",
         stringArray: [
@@ -31,7 +31,7 @@ const levels = LevelTemplate.makeTemplates([
             scale: 2,
             endPositions: {
                 "(8, 10)": {
-                    name: "level2",
+                    name: "room2",
                     position: Point(8, 0)
                 }
             }
@@ -39,7 +39,7 @@ const levels = LevelTemplate.makeTemplates([
     },
     
     {
-        name: "level2",
+        name: "room2",
         stringArray: [
             "AAAAAAAA A",
             "AAA      A",
@@ -58,7 +58,7 @@ const levels = LevelTemplate.makeTemplates([
             scale: 2,
             endPositions: {
                 "(4, 10)": {
-                    name: "level3",
+                    name: "room3",
                     position: Point(4, 0)
                 },
                 
@@ -71,7 +71,7 @@ const levels = LevelTemplate.makeTemplates([
     },
     
     {
-        name: "level3",
+        name: "room3",
         stringArray: [
             "AAAA AAAAA",
             "A        A",
@@ -90,17 +90,17 @@ const levels = LevelTemplate.makeTemplates([
             scale: 2,
             endPositions: {
                 "(4, -1)": {
-                    name: "level2",
+                    name: "room2",
                     position: Point(4, 9)
                 },
 
                 "(3, 10)": {
-                    name: "level4",
+                    name: "room4",
                     position: Point(1, 0)
                 },
 
                 "(10, 8)": {
-                    name: "level6",
+                    name: "room6",
                     position: Point(0, 2)
                 }
             }
@@ -108,7 +108,7 @@ const levels = LevelTemplate.makeTemplates([
     },
 
     {
-        name: "level4",
+        name: "room4",
         stringArray: [
             "A AAA",
             "A C A",
@@ -122,12 +122,12 @@ const levels = LevelTemplate.makeTemplates([
             scale: 4,
             endPositions: {
                 "(1, -1)": {
-                    name: "level3",
+                    name: "room3",
                     position: Point(3, 9)
                 },
 
                 "(3, 5)": {
-                    name: "level5",
+                    name: "room5",
                     position: Point(3, 0)
                 }
             }
@@ -135,7 +135,7 @@ const levels = LevelTemplate.makeTemplates([
     },
 
     {
-        name: "level5",
+        name: "room5",
         stringArray: [
             "AAA A",
             "A   A",
@@ -154,7 +154,7 @@ const levels = LevelTemplate.makeTemplates([
             scale: 2,
             endPositions: {
                 "(3, -1)": {
-                    name: "level4",
+                    name: "room4",
                     position: Point(3, 4)
                 }
             }
@@ -162,7 +162,7 @@ const levels = LevelTemplate.makeTemplates([
     },
 
     {
-        name: "level6",
+        name: "room6",
         stringArray: [
             "AAAAAAAAAA",
             "ACACACACCA",
@@ -176,7 +176,7 @@ const levels = LevelTemplate.makeTemplates([
             scale: 2,
             endPositions: {
                 "(-1, 2)": {
-                    name: "level3",
+                    name: "room3",
                     position: Point(9, 8)
                 }
             }
@@ -184,4 +184,4 @@ const levels = LevelTemplate.makeTemplates([
     }
 ]);
 
-export default levels;
+export default rooms;

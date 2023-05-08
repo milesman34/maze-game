@@ -5,33 +5,33 @@ import * as constants from "../constants"
 import Game from "../Game";
 import Tile from "../tiles/Tile";
 import app from "../app";
-import LevelTemplate from "./LevelTemplate";
+import RoomTemplate from "./RoomTemplate";
 
-// This type represents a link to another level
-type LevelLink = {
+// This type represents a link to another room
+type RoomLink = {
     name: string,
     position: Point
 }
 
-// This type represents a map from characters to level objects
-type LevelCharMap = Record<PointString, Tile>;
+// This type represents a map from characters to room objects
+type RoomCharMap = Record<PointString, Tile>;
 
-// This object represents a level in the game
-// The level could handle drawing as well
-type Level = {
+// This object represents a room in the game
+// The room handles drawing as well
+type Room = {
     width: number,
     height: number,
     scale: number,
     game: Game,
     tileSize: number,
     startPos: Point,
-    endPositions: Record<PointString, LevelLink>,
+    endPositions: Record<PointString, RoomLink>,
     objectTable: ObjectTable,
     getStartPos: () => Point,
     getWidth: () => number,
     getHeight: () => number,
     setGame: (game: Game) => void,
-    loadFromLayout: (stringArray: Array<String>, charMap: LevelCharMap) => void,
+    loadFromLayout: (stringArray: Array<String>, charMap: RoomCharMap) => void,
     draw: () => void,
     unload: () => void,
     getPixelWidth: () => number,
@@ -42,19 +42,19 @@ type Level = {
     getObjectAt: (pos: Point) => Tile,
     removeObjectAt: (pos: Point) => void,
     isEndPosition: (pos: Point) => boolean,
-    getLevelLinkAt: (pos: Point) => LevelLink
+    getRoomLinkAt: (pos: Point) => RoomLink
 }
 
-type LevelParams = {
+type RoomParams = {
     width?: number,
     height?: number,
     startPos?: Point,
     game?: Game,
     scale?: number,
-    endPositions?: Record<PointString, LevelLink>
+    endPositions?: Record<PointString, RoomLink>
 }
 
-const Level = ({
+const Room = ({
     width = constants.numTiles, 
     height = constants.numTiles,
     
@@ -63,15 +63,15 @@ const Level = ({
     game = null, 
     scale = 1,
 
-    // Track end positions, mapping position to object of form (level name, position)
+    // Track end positions, mapping position to object of form (room name, position)
     endPositions = {}
-}: LevelParams = {}): Level => {
-    let object: Level = {
-        // Level dimensions
+}: RoomParams = {}): Room => {
+    let object: Room = {
+        // Room dimensions
         width,
         height,
 
-        // Scale of the level
+        // Scale of the room
         scale,
 
         // Reference to the game
@@ -94,12 +94,12 @@ const Level = ({
             return this.startPos;
         },
 
-        // Gets the width of the level
+        // Gets the width of the room
         getWidth(): number {
             return this.width;
         },
 
-        // Gets the height of the level
+        // Gets the height of the room
         getHeight(): number {
             return this.height;
         },
@@ -110,7 +110,7 @@ const Level = ({
         },
 
         // Sets up a maze based on an array of strings that maps out the layout + an object that maps characters to game objects
-        loadFromLayout(stringArray: Array<string>, charMap: LevelCharMap) {
+        loadFromLayout(stringArray: Array<string>, charMap: RoomCharMap) {
             // Reset object table if dimensions are off
             if (stringArray[0].length != this.width || stringArray.length != this.height) {
                 this.width = stringArray[0].length;
@@ -125,7 +125,7 @@ const Level = ({
                     // The character maps to something in the map, so we know the given object exists there
                     if (char in charMap) {
                         // We need to find a better way to handle making sure its a unique object, maybe a dedicated copy function which can handle arrays or objects
-                        let newObject = {..._.cloneDeep(charMap[char]), level: this, game: this.game, position: Point(col, row)};
+                        let newObject = {..._.cloneDeep(charMap[char]), room: this, game: this.game, position: Point(col, row)};
 
                         this.objectTable.setObjectWithRow(row, col, newObject);
                     }
@@ -133,7 +133,7 @@ const Level = ({
             }
         },
 
-        // Draws the level
+        // Draws the room
         draw() {
             app.stage.scale.set(this.scale, this.scale);
 
@@ -144,7 +144,7 @@ const Level = ({
             });
         },
 
-        // Unloads the level
+        // Unloads the room
         unload() {
             this.objectTable.iterate((object: Tile, x: number, y: number) => {
                 if (object !== null) {
@@ -155,17 +155,17 @@ const Level = ({
             this.game.getPlayer().deleteSprite();
         },
 
-        // Calculates the number of pixels wide the level is
+        // Calculates the number of pixels wide the room is
         getPixelWidth(): number {
             return this.width * this.tileSize * this.scale;
         },
 
-        // Calculates the number of pixels high the level is
+        // Calculates the number of pixels high the room is
         getPixelHeight(): number {
             return this.height * this.tileSize * this.scale;
         },
 
-        // Calculates the offset needed to center the drawn level
+        // Calculates the offset needed to center the drawn room
         getCenterOffset(): Point {
             return Point(
                 Math.round((constants.canvasSize - this.getPixelWidth()) / 2),
@@ -181,7 +181,7 @@ const Level = ({
             );
         },
 
-        // Checks if a position is valid for this level
+        // Checks if a position is valid for this room
         isPositionValid(pos: Point): boolean {
             // Check if position is out of bounds
             if (pos.x < 0 || pos.x >= this.width || pos.y < 0 || pos.y >= this.height)
@@ -208,8 +208,8 @@ const Level = ({
             return pos.toString() in this.endPositions;
         },
 
-        // Gets the link to the next level based on an end position
-        getLevelLinkAt(pos: Point): LevelLink {
+        // Gets the link to the next room based on an end position
+        getRoomLinkAt(pos: Point): RoomLink {
             return this.endPositions[pos.toString()];
         }
     };
@@ -217,23 +217,23 @@ const Level = ({
     return object;
 };
 
-// Loads a level from a layout (supports extra parameters)
-Level.loadFromLayout = (game: Game, stringArray: Array<string>, charMap: LevelCharMap, params: LevelParams) => {
-    let level = Level({...params, game});
+// Loads a room from a layout (supports extra parameters)
+Room.loadFromLayout = (game: Game, stringArray: Array<string>, charMap: RoomCharMap, params: RoomParams) => {
+    let room = Room({...params, game});
 
-    level.loadFromLayout(stringArray, charMap);
+    room.loadFromLayout(stringArray, charMap);
 
-    return level;
+    return room;
 }
 
-// Loads a level from a template
-Level.loadFromTemplate = (game: Game, levelTemplate: LevelTemplate) => {
-    return Level.loadFromLayout(game, levelTemplate.stringArray, levelTemplate.charMap, levelTemplate.params);
+// Loads a room from a template
+Room.loadFromTemplate = (game: Game, roomTemplate: RoomTemplate) => {
+    return Room.loadFromLayout(game, roomTemplate.stringArray, roomTemplate.charMap, roomTemplate.params);
 }
 
 export {
-    LevelLink,
-    Level,
-    LevelCharMap,
-    LevelParams
+    RoomLink,
+    Room,
+    RoomCharMap,
+    RoomParams
 }

@@ -1,19 +1,19 @@
-import { Level } from "../levels/Level";
+import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 
 // This object represents a wall in the game, so it has collision
 type Coin = Tile;
 
 type CoinParams = {
-    level?: Level,
+    room?: Room,
     path: string,
     score?: number
 }
 
-const Coin = ({level = null, path, score=1}: CoinParams): Coin => {
+const Coin = ({room = null, path, score=1}: CoinParams): Coin => {
     let tile = Tile({
         path,
-        level, 
+        room, 
         solid: false, 
 
         handleCollision() {

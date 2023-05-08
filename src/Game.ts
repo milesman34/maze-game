@@ -1,20 +1,20 @@
 import Player from "./Player";
 import { Point } from "./Point";
 import { GameState } from "./enums";
-import { Level } from "./levels/Level";
-import LevelTemplate from "./levels/LevelTemplate";
+import { Room } from "./rooms/Room";
+import RoomTemplate from "./rooms/RoomTemplate";
 
 type Game = {
     state: GameState,
-    level: Level,
+    room: Room,
     player: Player,
     score: number,
-    levelMap: Record<string, Level>,
+    roomMap: Record<string, Room>,
     getState: () => GameState,
     setState: (state: GameState) => void,
-    getLevel: () => Level,
-    setLevel: (level: Level) => void,
-    loadLevel: (levelTemplate: LevelTemplate, position?: Point) => void,
+    getRoom: () => Room,
+    setRoom: (room: Room) => void,
+    loadRoom: (roomTemplate: RoomTemplate, position?: Point) => void,
     getScore: () => number,
     setScore: (score: number) => void,
     addScore: (score: number) => void,
@@ -29,8 +29,8 @@ const Game = (state: GameState) => {
         // Current game state
         state,
 
-        // Current level
-        level: null,
+        // Current room
+        room: null,
 
         // Player object
         player: null,
@@ -38,8 +38,8 @@ const Game = (state: GameState) => {
         // Current score
         score: 0,
 
-        // Maps level names to loaded levels
-        levelMap: {},
+        // Maps room names to loaded rooms
+        roomMap: {},
 
         // Gets the current game state
         getState(): GameState {
@@ -51,42 +51,42 @@ const Game = (state: GameState) => {
             this.state = state;
         },
 
-        // Gets the current level
-        getLevel(): Level {
-            return this.level;
+        // Gets the current room
+        getRoom(): Room {
+            return this.room;
         },
 
-        // Sets the current level
-        setLevel(level: Level) {
-            this.level = level;
+        // Sets the current room
+        setRoom(room: Room) {
+            this.room = room;
         },
 
-        // Loads a level from a template
+        // Loads a room from a template
         // Starting position can optionally be provided
-        loadLevel(levelTemplate: LevelTemplate, position: Point = null) {
-            // Unloads old level if needed
-            if (this.level !== null) {
-                this.level.unload();
+        loadRoom(roomTemplate: RoomTemplate, position: Point = null) {
+            // Unloads old room if needed
+            if (this.room !== null) {
+                this.room.unload();
             }
 
-            const levelName = levelTemplate.getName();
+            const roomName = roomTemplate.getName();
 
-            if (levelName in this.levelMap) {
-                this.level = this.levelMap[levelName];
+            if (roomName in this.roomMap) {
+                this.room = this.roomMap[roomName];
             } else {
-                this.level = Level.loadFromTemplate(this, levelTemplate);
-                this.levelMap[levelName] = this.level;
+                this.room = Room.loadFromTemplate(this, roomTemplate);
+                this.roomMap[roomName] = this.room;
             }
 
             this.player = Player({
                 game: this,
-                position: position === null ? this.level.getStartPos() : position,
-                level: this.level
+                position: position === null ? this.room.getStartPos() : position,
+                room: this.room
             });
 
             this.player.draw();
 
-            this.level.draw();
+            this.room.draw();
         },
 
         // Gets the current score
@@ -110,9 +110,9 @@ const Game = (state: GameState) => {
             return this.player;
         },
 
-        // Gets the current center offset for the level
+        // Gets the current center offset for the room
         getCenterOffset(): Point {
-            return this.level.getCenterOffset();
+            return this.room.getCenterOffset();
         },
 
         // Handles a keypress (pass event.key)
