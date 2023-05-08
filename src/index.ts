@@ -1,6 +1,6 @@
-import Game from "./Game";
+import Game from "./game/Game";
 import { GameState } from "./enums";
-import rooms from "./rooms/rooms";
+import rooms from "./game/rooms/rooms";
 import * as $ from "jquery";
 import app from "./app";
 

@@ -1,4 +1,4 @@
-import { Point } from "../Point";
+import { Point } from "../../Point";
 import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
 import RoomTemplate from "./RoomTemplate";
 

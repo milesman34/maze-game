@@ -1,7 +1,7 @@
 import Game from "./Game";
-import { Point } from "./Point";
-import app from "./app";
-import { Direction } from "./enums";
+import { Point } from "../Point";
+import app from "../app";
+import { Direction } from "../enums";
 import { Room } from "./rooms/Room";
 import rooms from "./rooms/rooms";
 import * as PIXI from "pixi.js";
@@ -85,7 +85,7 @@ const Player = ({game, position, room = null}: PlayerParams) => {
         },
 
         // Moves the player in a direction
-        move(direction) {
+        move(direction: Direction) {
             if (this.room === null)
                 return;
 
@@ -116,7 +116,7 @@ const Player = ({game, position, room = null}: PlayerParams) => {
         },
 
         // Handles a keypress (pass event.key)
-        handleKeypress(key) {
+        handleKeypress(key: string) {
             switch (key) {
                 case "ArrowDown":
                     this.move(Direction.Down);

@@ -25,7 +25,7 @@ const Point = (x: number, y: number): Point => ({
     },
 
     // Converts to a string for checking arrays
-    toString(): string {
+    toString(): PointString {
         return `(${this.x}, ${this.y})`
     }
 });

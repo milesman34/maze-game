@@ -1,5 +1,5 @@
 import Tile from "../tiles/Tile";
-import { gen2DArray } from "../utils";
+import { gen2DArray } from "../../utils";
 
 type IterateFunction = (object: Tile, x: number, y: number) => void;
 

@@ -1,8 +1,8 @@
 import Game from "../Game";
-import { Point } from "../Point";
+import { Point } from "../../Point";
 import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
-import app from "../app";
+import app from "../../app";
 
 // This object represents a tile in the game
 type Tile = {
@@ -44,7 +44,7 @@ const Tile = ({
         // Is the object solid?
         solid,
         
-        isSolid(): boolean {
+        isSolid() {
             return this.solid;
         },
 

@@ -1,10 +1,10 @@
 import ObjectTable from "./ObjectTable";
-import { Point, PointString } from "../Point";
+import { Point, PointString } from "../../Point";
 import * as _ from "lodash";
-import * as constants from "../constants"
+import * as constants from "../../constants"
 import Game from "../Game";
 import Tile from "../tiles/Tile";
-import app from "../app";
+import app from "../../app";
 import RoomTemplate from "./RoomTemplate";
 
 // This type represents a link to another room

@@ -1,6 +1,6 @@
 import Player from "./Player";
-import { Point } from "./Point";
-import { GameState } from "./enums";
+import { Point } from "../Point";
+import { GameState } from "../enums";
 import { Room } from "./rooms/Room";
 import RoomTemplate from "./rooms/RoomTemplate";
 
