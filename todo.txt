@@ -4,10 +4,10 @@ Add energy system eventually?
 Key/lock system could have each level keep track of the position of keys and their colors (which will be important, maybe link to constants, generate key textures)
 For keys, use some sort of record that links key colors (name of color?) to a list of key positions, so one color can have multiple keys
 For locks, use some sort of record that links key colors to a list of lock positions, when the required key is collected the locks are all removed
+Track how many keys of a certain color are collected
 
 Yeah, mapping keys/locks based off their color seems like the best call here
 
 If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock, and they display how many more keys of that color are required
 
-One thing I could do instead of the current system is to have level maps, which are collections of levels you can go through, and have keys/locks be global to those level maps. This may be better for puzzle design.
-Or some other name for level map: Maybe rename the current Level system to Rooms, and the Level is a collection of Rooms that the player can go through.
+Actually, instead of telling all locks when a key has been collected, we can only update the locks on screen, then when we load another room, update the locks based on level key data.

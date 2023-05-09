@@ -1,4 +1,5 @@
 import Coin from "./Coin";
+import Key from "./Key";
 import Wall from "./Wall";
 
 // This file contains a list of template objects to be used for level design
@@ -16,8 +17,13 @@ const blueCoin = Coin({
     score: 5
 });
 
+const standardKey = Key({
+    color: 0xFFFFFF
+});
+
 export {
     standardWall,
     standardCoin,
-    blueCoin
+    blueCoin,
+    standardKey
 }

@@ -12,6 +12,7 @@ type Tile = {
     room: Room,
     solid: boolean,
     isSolid: () => boolean,
+    applyFilters: () => void,
     handleCollision: () => void,
     draw: () => void,
     deleteSprite: () => void,
@@ -48,6 +49,9 @@ const Tile = ({
             return this.solid;
         },
 
+        // Applies any necessary filters to the sprite
+        applyFilters() {},
+
         // Handles a collision
         handleCollision,
 
@@ -66,6 +70,8 @@ const Tile = ({
             app.stage.addChild(sprite);
 
             this.sprite = sprite;
+
+            this.applyFilters();
         },
 
         // Deletes the object's sprite

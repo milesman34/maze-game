@@ -1,9 +1,10 @@
-import { Point } from "../../Point"
+import * as $ from "jquery"
 import Game from "../Game"
 import Player from "../Player"
 import { Room, RoomLink } from "../rooms/Room"
-import { RoomCollection, RoomTemplate } from "../rooms/RoomTemplate"
+import { RoomCollection } from "../rooms/RoomTemplate"
 import { LevelTemplate } from "./LevelTemplate"
+import { Color } from "../../types"
 
 // This object represents a level in the game
 // Each level has a series of rooms
@@ -16,6 +17,7 @@ type Level = {
     score: number,
     player: Player,
     roomMap: Record<string, Room>,
+    collectedKeys: Record<Color, number>,
     getScore: () => number,
     setScore: (score: number) => void,
     addScore: (score: number) => void,
@@ -25,7 +27,8 @@ type Level = {
     getRoomWithName: (name: string) => Room,
     load: () => void,
     loadRoom: (roomLink: RoomLink) => void,
-    deletePlayerSprite: () => void
+    deletePlayerSprite: () => void,
+    collectKey: (color: Color) => void
 }
 
 type LevelParams = {
@@ -60,6 +63,9 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         
         // Maps room names to loaded rooms
         roomMap: {},
+
+        // Set of collected keys (maps color to number)
+        collectedKeys: {},
         
         // Gets the current score
         getScore(): number {
@@ -134,6 +140,15 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Deletes the player's sprite
         deletePlayerSprite() {
             this.player.deleteSprite();
+        },
+        
+        // Collects a key with the given color
+        collectKey(color: Color) {
+            if (color in this.collectedKeys) {
+                this.collectedKeys[color]++;
+            } else {
+                this.collectedKeys[color] = 1;
+            }
         }
     }
     

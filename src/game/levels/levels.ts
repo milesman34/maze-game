@@ -1,6 +1,7 @@
 import { Point } from "../../Point";
 import { RoomTemplate } from "../rooms/RoomTemplate";
-import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
+import Key from "../tiles/Key";
+import { blueCoin, standardCoin, standardKey, standardWall } from "../tiles/tileTemplates";
 import { LevelTemplate } from "./LevelTemplate";
 
 // Default charmap
@@ -48,15 +49,20 @@ const levels = LevelTemplate.makeTemplates([
                     "AAAAAAAA A",
                     "AAA      A",
                     "ABAA AAA A",
-                    "A  A ACA A",
-                    "A AA A A A",
-                    "A AA     A",
+                    "AL A ACA A",
+                    "AKAA A A A",
+                    "AJAA     A",
                     "AC   AAAAA",
                     "AAAA AAAAA",
                     "ACC     BA",
                     "AAAA AAAAA"
                 ],
-                charMap: defCharMap,
+                charMap: {
+                    ...defCharMap,
+                    "J": Key({ color: 0xFF7700}),
+                    "K": Key({ color: 0x55FFAA}),
+                    "L": Key({ color: 0x00AAFF})
+                },
                 params: {
                     startPos: Point(8, 0),
                     scale: 2,
