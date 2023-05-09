@@ -22,8 +22,10 @@ type Level = {
     getPlayer: () => Player,
     getRoom: () => Room,
     setRoom: (room: Room) => void,
+    getRoomWithName: (name: string) => Room,
     load: () => void,
-    loadRoom: (roomLink: RoomLink) => void
+    loadRoom: (roomLink: RoomLink) => void,
+    deletePlayerSprite: () => void
 }
 
 type LevelParams = {
@@ -90,6 +92,17 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             this.room = room;
         },
 
+        // Gets the room with a given name
+        getRoomWithName(name: string): Room {
+            if (name in this.roomMap) {
+                return this.roomMap[name];
+            } else {
+                const room = Room.loadFromTemplate(this, this.rooms[name]);
+                this.roomMap[name] = room;
+                return room;
+            }
+        },
+
         // Loads the level for the first time (loading the starting room)
         load() {
             this.loadRoom({ name: startingRoom });
@@ -99,21 +112,12 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Starting position can optionally be provided
         loadRoom(roomLink: RoomLink) {
             // Unloads old room if needed
-            if (this.room !== null) {
-                this.room.unload();
-            }
-
-            console.log(roomLink);
+            this.room?.unload();
             
-            const roomName = roomLink.name;
+            // Sets up the current room
+            this.room = this.getRoomWithName(roomLink.name);
             
-            if (roomName in this.roomMap) {
-                this.room = this.roomMap[roomName];
-            } else {
-                this.room = Room.loadFromTemplate(this, this.rooms[roomName]);
-                this.roomMap[roomName] = this.room;
-            }
-            
+            // if called with Level.load, the RoomLink object is not provided a position so we default to the room's starting position
             this.player = Player({
                 level: this,
                 position: roomLink.position ?? this.room.getStartPos(),
@@ -126,6 +130,11 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             
             this.room.draw();
         },
+
+        // Deletes the player's sprite
+        deletePlayerSprite() {
+            this.player.deleteSprite();
+        }
     }
     
     object.setScore(0);

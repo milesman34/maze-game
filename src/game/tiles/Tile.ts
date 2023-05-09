@@ -1,14 +1,14 @@
-import Game from "../Game";
 import { Point } from "../../Point";
 import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
 import app from "../../app";
+import Level from "../levels/Level";
 
 // This object represents a tile in the game
 type Tile = {
     sprite: PIXI.Sprite,
     position: Point,
-    level: Game,
+    level: Level,
     room: Room,
     solid: boolean,
     isSolid: () => boolean,

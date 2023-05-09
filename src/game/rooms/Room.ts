@@ -34,9 +34,9 @@ type Room = {
     loadFromLayout: (stringArray: Array<String>, charMap: RoomCharMap) => void,
     draw: () => void,
     unload: () => void,
-    getPixelWidth: () => number,
-    getPixelHeight: () => number,
-    getCenterOffset: () => Point,
+    // getPixelWidth: () => number,
+    // getPixelHeight: () => number,
+    // getCenterOffset: () => Point,
     calculatePosition: (pos: Point) => Point,
     isPositionValid: (pos: Point) => boolean,
     getObjectAt: (pos: Point) => Tile,
@@ -133,40 +133,36 @@ const Room = ({
             app.stage.scale.set(this.scale, this.scale);
 
             this.objectTable.iterate((object: Tile, x: number, y: number) => {
-                if (object !== null) {
-                    object.draw();
-                }
+                object?.draw();
             });
         },
 
         // Unloads the room
         unload() {
             this.objectTable.iterate((object: Tile, x: number, y: number) => {
-                if (object !== null) {
-                    object.deleteSprite();
-                }
+                object?.deleteSprite();
             });
 
-            this.level.getPlayer().deleteSprite();
+            this.level.deletePlayerSprite();
         },
 
-        // Calculates the number of pixels wide the room is
-        getPixelWidth(): number {
-            return this.width * this.tileSize * this.scale;
-        },
+        // // Calculates the number of pixels wide the room is
+        // getPixelWidth(): number {
+        //     return this.width * this.tileSize * this.scale;
+        // },
 
-        // Calculates the number of pixels high the room is
-        getPixelHeight(): number {
-            return this.height * this.tileSize * this.scale;
-        },
+        // // Calculates the number of pixels high the room is
+        // getPixelHeight(): number {
+        //     return this.height * this.tileSize * this.scale;
+        // },
 
-        // Calculates the offset needed to center the drawn room
-        getCenterOffset(): Point {
-            return Point(
-                Math.round((constants.canvasSize - this.getPixelWidth()) / 2),
-                Math.round((constants.canvasSize - this.getPixelHeight()) / 2),
-            );
-        },
+        // // Calculates the offset needed to center the drawn room
+        // getCenterOffset(): Point {
+        //     return Point(
+        //         Math.round((constants.canvasSize - this.getPixelWidth()) / 2),
+        //         Math.round((constants.canvasSize - this.getPixelHeight()) / 2),
+        //     );
+        // },
 
         // Calculates the position of an object adjusted to tileSize
         calculatePosition(pos: Point): Point {
