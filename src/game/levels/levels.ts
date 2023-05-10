@@ -69,8 +69,8 @@ const levels = LevelTemplate.makeTemplates([
                     scale: 2,
                     endPositions: {
                         "(4, 10)": {
-                            name: "room3",
-                            position: Point(4, 0)
+                            name: "room4",
+                            position: Point(1, 0)
                         },
                         
                         "(8, -1)": {
@@ -137,8 +137,8 @@ const levels = LevelTemplate.makeTemplates([
                     scale: 4,
                     endPositions: {
                         "(1, -1)": {
-                            name: "room3",
-                            position: Point(3, 9)
+                            name: "room2",
+                            position: Point(4, 9)
                         },
         
                         "(3, 5)": {

@@ -12,7 +12,7 @@ type KeyParams = {
 }
 
 const Lock = ({room = null, color = 0xFFFFFF}: KeyParams): Lock => {
-    let tile = Tile({ path: "./assets/tiles/standard_wall.png", room, solid: true });
+    let tile = Tile({ path: "", room, solid: true });
 
     return {
         ...tile,
