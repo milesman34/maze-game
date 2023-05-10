@@ -1,7 +1,7 @@
 import ObjectTable from "./ObjectTable";
-import { Point, PointString } from "../../Point";
+import { Point, PointString } from "../../utils/Point";
 import * as _ from "lodash";
-import * as constants from "../../constants"
+import * as constants from "../../utils/constants"
 import Game from "../Game";
 import Tile from "../tiles/Tile";
 import app from "../../app";
@@ -120,7 +120,10 @@ const Room = ({
                     // The character maps to something in the map, so we know the given object exists there
                     if (char in charMap) {
                         // We need to find a better way to handle making sure its a unique object, maybe a dedicated copy function which can handle arrays or objects
-                        let newObject = {..._.cloneDeep(charMap[char]), room: this, level: this.level, position: Point(col, row)};
+                        let newObject = _.cloneDeep(charMap[char]);
+                        newObject.setRoom(this);
+                        newObject.setLevel(this.level);
+                        newObject.setPosition(Point(col, row));
 
                         this.objectTable.setObjectWithRow(row, col, newObject);
                     }

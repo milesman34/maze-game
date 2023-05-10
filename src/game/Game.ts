@@ -1,4 +1,4 @@
-import { GameState } from "../enums";
+import { GameState } from "../utils/enums";
 import Player from "./Player";
 import Level from "./levels/Level";
 import { LevelTemplate } from "./levels/LevelTemplate";

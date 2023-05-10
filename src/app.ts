@@ -1,5 +1,5 @@
 import * as PIXI from "pixi.js";
-import * as constants from "./constants";
+import * as constants from "./utils/constants";
 
 // Initialize app
 const app = new PIXI.Application({ width: constants.canvasSize, height: constants.canvasSize });

@@ -4,7 +4,7 @@ import Player from "../Player"
 import { Room, RoomLink } from "../rooms/Room"
 import { RoomCollection } from "../rooms/RoomTemplate"
 import { LevelTemplate } from "./LevelTemplate"
-import { Color } from "../../types"
+import { Color } from "../../utils/types"
 
 // This object represents a level in the game
 // Each level has a series of rooms

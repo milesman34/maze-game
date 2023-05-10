@@ -1,5 +1,5 @@
 import Game from "./game/Game";
-import { GameState } from "./enums";
+import { GameState } from "./utils/enums";
 import * as $ from "jquery";
 import app from "./app";
 import levels from "./game/levels/levels";

@@ -11,3 +11,6 @@ Yeah, mapping keys/locks based off their color seems like the best call here
 If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock, and they display how many more keys of that color are required
 
 Actually, instead of telling all locks when a key has been collected, we can only update the locks on screen, then when we load another room, update the locks based on level key data.
+
+Locks are tricky because I have to render a lock over a wall. To do that, maybe I will need to have some ability to change the definition of a sprite for a Tile object to be a container,
+or maybe override the draw/deleteSprite methods to handle this. Maybe I should implement a better way for drawing objects.

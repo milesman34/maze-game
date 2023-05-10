@@ -1,17 +1,20 @@
-import { Point } from "../../Point";
+import { Point } from "../../utils/Point";
 import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
-import app from "../../app";
 import Level from "../levels/Level";
+import CanvasDrawer from "../../utils/CanvasDrawer";
 
 // This object represents a tile in the game
 type Tile = {
-    sprite: PIXI.Sprite,
+    drawer: CanvasDrawer,
     position: Point,
     level: Level,
     room: Room,
     solid: boolean,
     isSolid: () => boolean,
+    setRoom: (room: Room) => void,
+    setLevel: (level: Level) => void,
+    setPosition: (position: Point) => void,
     applyFilters: () => void,
     handleCollision: () => void,
     draw: () => void,
@@ -31,8 +34,8 @@ const Tile = ({
     path, position = Point(0, 0), room = null, solid = false, handleCollision = function() {}
 }: TileParams): Tile => {
     let object: Tile = {
-        // Track the current sprite
-        sprite: null,
+        // Draws objects on the canvas
+        drawer: CanvasDrawer({ room }),
 
         // Current position
         position,
@@ -49,6 +52,22 @@ const Tile = ({
             return this.solid;
         },
 
+        // Sets the current room
+        setRoom(room: Room) {
+            this.room = room;
+            this.drawer.setRoom(room);
+        },
+
+        // Sets the current level
+        setLevel(level: Level) {
+            this.level = level;
+        },
+
+        // Sets the current position
+        setPosition(position: Point) {
+            this.position = position;
+        },
+
         // Applies any necessary filters to the sprite
         applyFilters() {},
 
@@ -57,31 +76,14 @@ const Tile = ({
 
         // Draws the tile
         draw() {
-            if (this.sprite !== null)
-                return;
+            this.drawer.draw("sprite", this.position, PIXI.Sprite.from(path));
 
-            let sprite = PIXI.Sprite.from(path);
-
-            let position = this.room.calculatePosition(this.position);
-
-            sprite.x = position.x;
-            sprite.y = position.y;
-
-            app.stage.addChild(sprite);
-
-            this.sprite = sprite;
-
-            this.applyFilters();
+            // this.applyFilters();
         },
 
         // Deletes the object's sprite
         deleteSprite() {
-            if (this.sprite === null)
-                return;
-
-            app.stage.removeChild(this.sprite);
-            this.sprite.destroy();
-            this.sprite = null;
+            this.drawer.delete("sprite");
         },
 
         // Destroys the object

@@ -1,9 +1,9 @@
-import { Point } from "../Point";
-import app from "../app";
-import { Direction } from "../enums";
+import { Point } from "../utils/Point";
+import { Direction } from "../utils/enums";
 import { Room } from "./rooms/Room";
 import * as PIXI from "pixi.js";
 import Level from "./levels/Level";
+import CanvasDrawer from "../utils/CanvasDrawer";
 
 let template = new PIXI.Graphics();
 
@@ -23,7 +23,7 @@ type Player = {
     level: Level,
     room: Room,
     position: Point,
-    sprite: PIXI.Sprite,
+    drawer: CanvasDrawer
     draw: () => void,
     deleteSprite: () => void,
     destroy: () => void,
@@ -48,34 +48,17 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
         // Current player position
         position,
 
-        // Current sprite object
-        sprite: null,
+        // Draws objects on the screen
+        drawer: CanvasDrawer({ room }),
 
         // Draws the player
         draw() {
-            if (this.sprite !== null)
-                return;
-
-            let sprite = new PIXI.Graphics(template.geometry);
-
-            let position = this.room.calculatePosition(this.position);
-
-            sprite.x = position.x;
-            sprite.y = position.y;
-
-            app.stage.addChild(sprite);
-
-            this.sprite = sprite;
+            this.drawer.draw("sprite", this.position, new PIXI.Graphics(template.geometry));
         },
 
         // Deletes the player graphics
         deleteSprite() {
-            if (this.sprite === null)
-                return;
-
-            app.stage.removeChild(this.sprite);
-            this.sprite.destroy();
-            this.sprite = null;
+            this.drawer.delete("sprite");
         },
 
         // Destroys the player

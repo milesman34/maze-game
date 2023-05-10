@@ -4,23 +4,18 @@ import Tile from "./Tile";
 import { Color } from "../../utils/types";
 
 // This represents a key which can be collected
-type Key = Tile
+type Lock = Tile
 
 type KeyParams = {
     room?: Room,
     color?: Color
 }
 
-const Key = ({room = null, color = 0xFFFFFF}: KeyParams): Key => {
-    let tile = Tile({ path: "./assets/tiles/key.png", room, solid: false });
+const Lock = ({room = null, color = 0xFFFFFF}: KeyParams): Lock => {
+    let tile = Tile({ path: "./assets/tiles/lock.png", room, solid: true });
 
     return {
         ...tile,
-
-        handleCollision() {
-            this.level.collectKey(color);
-            this.destroy();
-        },
 
         // Color of the key
         applyFilters() {
@@ -31,4 +26,4 @@ const Key = ({room = null, color = 0xFFFFFF}: KeyParams): Key => {
     }
 }
 
-export default Key
+export default Lock
