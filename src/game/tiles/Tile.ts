@@ -78,7 +78,7 @@ const Tile = ({
         draw() {
             this.drawer.draw("sprite", this.position, PIXI.Sprite.from(path));
 
-            // this.applyFilters();
+            this.applyFilters();
         },
 
         // Deletes the object's sprite

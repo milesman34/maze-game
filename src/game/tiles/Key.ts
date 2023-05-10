@@ -24,9 +24,7 @@ const Key = ({room = null, color = 0xFFFFFF}: KeyParams): Key => {
 
         // Color of the key
         applyFilters() {
-            // const colorMatrix = new PIXI.ColorMatrixFilter();
-            // this.sprite.filters = [colorMatrix];
-            // colorMatrix.tint(color);
+            this.drawer.changeColor("sprite", color);
         }
     }
 }

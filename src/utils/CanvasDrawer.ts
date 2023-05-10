@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js"
 import { Room } from "../game/rooms/Room";
 import { Point } from "./Point";
 import app from "../app";
+import { Color } from "./types";
 
 // This object can be attached to another object to allow it to draw on the screen
 type PIXIObject = PIXI.Graphics | PIXI.Sprite;
@@ -12,7 +13,8 @@ type CanvasDrawer = {
     setRoom: (room: Room) => void,
     hasSprite: (name: string) => boolean,
     draw: (name: string, position: Point, object: PIXIObject) => void,
-    delete: (name: string) => void
+    delete: (name: string) => void,
+    changeColor: (name: string, color: Color) => void
 }
 
 type CanvasDrawerParams = {
@@ -63,6 +65,16 @@ const CanvasDrawer = ({room = null}: CanvasDrawerParams): CanvasDrawer => ({
         app.stage.removeChild(sprite);
         sprite.destroy()
         this.sprites[name] = null;
+    },
+
+    // Changes the color of a sprite
+    changeColor(name: string, color: Color) {
+        if (!this.hasSprite(name))
+            return;
+
+        const colorMatrix = new PIXI.ColorMatrixFilter();
+        this.sprites[name].filters = [colorMatrix];
+        colorMatrix.tint(color);
     }
 });
 
