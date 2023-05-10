@@ -12,16 +12,28 @@ type KeyParams = {
 }
 
 const Lock = ({room = null, color = 0xFFFFFF}: KeyParams): Lock => {
-    let tile = Tile({ path: "./assets/tiles/lock.png", room, solid: true });
+    let tile = Tile({ path: "./assets/tiles/standard_wall.png", room, solid: true });
 
     return {
         ...tile,
 
+        // Draws the tile
+        draw() {
+            this.drawer.draw("wall", this.position, PIXI.Sprite.from("./assets/tiles/standard_wall.png"));
+            this.drawer.draw("lock", this.position, PIXI.Sprite.from("./assets/tiles/lock.png"));
+
+            this.applyFilters();
+        },
+
+        // Deletes the object's sprite
+        deleteSprite() {
+            this.drawer.delete("wall");
+            this.drawer.delete("lock");
+        },
+
         // Color of the key
         applyFilters() {
-            // const colorMatrix = new PIXI.ColorMatrixFilter();
-            // this.sprite.filters = [colorMatrix];
-            // colorMatrix.tint(color);
+            this.drawer.changeColor("lock", color);
         }
     }
 }
