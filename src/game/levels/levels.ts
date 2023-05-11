@@ -50,19 +50,22 @@ const levels = LevelTemplate.makeTemplates([
                     "AAAAAAAA A",
                     "AAA      A",
                     "ABAA AAA A",
-                    "AL A ACA A",
-                    "AKAA A A A",
+                    "A  A ACAOA",
+                    "AKAA AMALA",
                     "AJAA     A",
                     "AC   AAAAA",
                     "AAAA AAAAA",
-                    "ACC     BA",
+                    "ACCM N  BA",
                     "AAAA AAAAA"
                 ],
                 charMap: {
                     ...defCharMap,
                     "J": Key({ color: 0xFF7700}),
                     "K": Key({ color: 0x55FFAA}),
-                    "L": Key({ color: 0x00AAFF})
+                    "L": Key({ color: 0x00AAFF}),
+                    "M": Lock({ color: 0x55FFAA}),
+                    "N": Lock({ color: 0x00AAFF}),
+                    "O": Lock({ color: 0x00FFFF})
                 },
                 params: {
                     startPos: Point(8, 0),

@@ -1,3 +1,4 @@
+import { ObjectType } from "../../utils/enums";
 import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 
@@ -15,6 +16,7 @@ const Coin = ({room = null, path, score=1}: CoinParams): Coin => {
         path,
         room, 
         solid: false, 
+        type: ObjectType.Coin,
 
         handleCollision() {
             this.level.addScore(score);

@@ -5,6 +5,7 @@ import { Room, RoomLink } from "../rooms/Room"
 import { RoomCollection } from "../rooms/RoomTemplate"
 import { LevelTemplate } from "./LevelTemplate"
 import { Color } from "../../utils/types"
+import Tile from "../tiles/Tile"
 
 // This object represents a level in the game
 // Each level has a series of rooms
@@ -28,7 +29,8 @@ type Level = {
     load: () => void,
     loadRoom: (roomLink: RoomLink) => void,
     deletePlayerSprite: () => void,
-    collectKey: (color: Color) => void
+    collectKey: (color: Color) => void,
+    getCollectedKeys: () => Record<Color, number>
 }
 
 type LevelParams = {
@@ -100,13 +102,21 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
 
         // Gets the room with a given name
         getRoomWithName(name: string): Room {
+            let room: Room;
+
             if (name in this.roomMap) {
-                return this.roomMap[name];
+                room = this.roomMap[name];
             } else {
-                const room = Room.loadFromTemplate(this, this.rooms[name]);
+                room = Room.loadFromTemplate(this, this.rooms[name]);
                 this.roomMap[name] = room;
-                return room;
             }
+
+            // Update the values of any object which may need an update
+            room.iterate((object: Tile, x: number, y: number) => {
+                object?.update();
+            });
+
+            return room;
         },
 
         // Loads the level for the first time (loading the starting room)
@@ -149,6 +159,15 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             } else {
                 this.collectedKeys[color] = 1;
             }
+
+            this.room.iterate((object: Tile, x: number, y: number) => {
+                object?.useKey(color);
+            });
+        },
+
+        // Gets the collected keys
+        getCollectedKeys() {
+            return this.collectedKeys;
         }
     }
     

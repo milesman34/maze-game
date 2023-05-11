@@ -3,6 +3,8 @@ import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
 import Level from "../levels/Level";
 import CanvasDrawer from "../../utils/CanvasDrawer";
+import { ObjectType } from "../../utils/enums";
+import { Color } from "../../utils/types";
 
 // This object represents a tile in the game
 type Tile = {
@@ -10,8 +12,10 @@ type Tile = {
     position: Point,
     level: Level,
     room: Room,
+    type: ObjectType,
     solid: boolean,
     isSolid: () => boolean,
+    getType: () => ObjectType,
     setRoom: (room: Room) => void,
     setLevel: (level: Level) => void,
     setPosition: (position: Point) => void,
@@ -19,7 +23,9 @@ type Tile = {
     handleCollision: () => void,
     draw: () => void,
     deleteSprite: () => void,
-    destroy: () => void
+    destroy: () => void,
+    useKey: (color: Color, amount?: number) => void,
+    update: () => void
 }
 
 type TileParams = {
@@ -27,11 +33,12 @@ type TileParams = {
     position?: Point,
     room?: Room,
     solid?: boolean,
+    type?: ObjectType,
     handleCollision?: () => void
 }
 
 const Tile = ({
-    path, position = Point(0, 0), room = null, solid = false, handleCollision = function() {}
+    path, position = Point(0, 0), room = null, solid = false, type = ObjectType.Default, handleCollision = function() {}
 }: TileParams): Tile => {
     let object: Tile = {
         // Draws objects on the canvas
@@ -45,11 +52,19 @@ const Tile = ({
 
         room,
 
+        // Type of the object
+        type,
+
         // Is the object solid?
         solid,
         
         isSolid(): boolean {
             return this.solid;
+        },
+
+        // Gets the object's type
+        getType(): ObjectType {
+            return this.type;
         },
 
         // Sets the current room
@@ -74,6 +89,9 @@ const Tile = ({
         // Handles a collision
         handleCollision,
 
+        // Uses a key on the object (needs to be overriden to function)
+        useKey(color: Color, amount: number = 0) {},
+
         // Draws the tile
         draw() {
             this.drawer.draw("sprite", this.position, PIXI.Sprite.from(path));
@@ -91,7 +109,10 @@ const Tile = ({
             this.deleteSprite();
 
             this.room.removeObjectAt(this.position);
-        }
+        },
+
+        // Force-updates a tile
+        update() {}
     }
 
     return object;

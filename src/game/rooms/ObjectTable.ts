@@ -1,7 +1,6 @@
 import Tile from "../tiles/Tile";
 import { gen2DArray } from "../../utils/utils";
-
-type IterateFunction = (object: Tile, x: number, y: number) => void;
+import { IterateFunction } from "../../utils/types";
 
 type ObjectTable = {
     table: Array<Array<Tile>>,

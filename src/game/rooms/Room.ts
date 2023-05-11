@@ -2,11 +2,12 @@ import ObjectTable from "./ObjectTable";
 import { Point, PointString } from "../../utils/Point";
 import * as _ from "lodash";
 import * as constants from "../../utils/constants"
-import Game from "../Game";
 import Tile from "../tiles/Tile";
 import app from "../../app";
 import { RoomTemplate } from "./RoomTemplate";
 import Level from "../levels/Level";
+import { IterateFunction } from "../../utils/types";
+import { ObjectType } from "../../utils/enums";
 
 // This type represents a link to another room
 type RoomLink = {
@@ -42,7 +43,8 @@ type Room = {
     getObjectAt: (pos: Point) => Tile,
     removeObjectAt: (pos: Point) => void,
     isEndPosition: (pos: Point) => boolean,
-    getRoomLinkAt: (pos: Point) => RoomLink
+    getRoomLinkAt: (pos: Point) => RoomLink,
+    iterate: (fn: IterateFunction) => void
 }
 
 type RoomParams = {
@@ -205,6 +207,11 @@ const Room = ({
         // Gets the link to the next room based on an end position
         getRoomLinkAt(pos: Point): RoomLink {
             return this.endPositions[pos.toString()];
+        },
+
+        // Iterates over the objects in the room
+        iterate(fn: IterateFunction) {
+            this.objectTable.iterate(fn);
         }
     };
 

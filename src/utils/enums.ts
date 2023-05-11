@@ -12,7 +12,17 @@ enum Direction {
     Down
 }
 
+// Object type, assigned to each subclass of Tile
+enum ObjectType {
+    Default,
+    Wall,
+    Coin,
+    Key,
+    Lock
+}
+
 export {
     Direction,
-    GameState
+    GameState,
+    ObjectType
 }

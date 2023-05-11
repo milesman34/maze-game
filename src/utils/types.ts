@@ -1,4 +1,8 @@
+import Tile from "../game/tiles/Tile";
+
 // Hex color type
 type Color = number;
 
-export { Color }
+type IterateFunction = (object: Tile, x: number, y: number) => void;
+
+export { Color, IterateFunction }

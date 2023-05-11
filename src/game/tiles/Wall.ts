@@ -1,3 +1,4 @@
+import { ObjectType } from "../../utils/enums";
 import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 
@@ -10,7 +11,7 @@ type WallParams = {
 }
 
 const Wall = ({path, room = null}: WallParams): Wall => {
-    let tile = Tile({path, room, solid: true});
+    let tile = Tile({path, room, solid: true, type: ObjectType.Wall});
 
     return tile;
 }

@@ -6,7 +6,7 @@ import levels from "./game/levels/levels";
 import * as PIXI from "pixi.js";
 
 // Fix scaling mode to not be blurry
-PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+PIXI.BaseTexture.defaultOptions.scaleMode = PIXI.SCALE_MODES.NEAREST;
 
 // Sets up app
 $("#canvas-container").append(app.view as any);

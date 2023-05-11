@@ -2,20 +2,60 @@ import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 import { Color } from "../../utils/types";
+import { ObjectType } from "../../utils/enums";
 
 // This represents a key which can be collected
-type Lock = Tile
+type Lock = Tile & {
+    color: Color,
+    initialAmount: number,
+    amount: number,
+    getColor: () => Color,
+    setKeys: (amount: number) => void,
+    subtractKeys: (amount: number) => void
+}
 
 type KeyParams = {
     room?: Room,
-    color?: Color
+    color?: Color,
+    amount?: number
 }
 
-const Lock = ({room = null, color = 0xFFFFFF}: KeyParams): Lock => {
-    let tile = Tile({ path: "", room, solid: true });
+const Lock = ({room = null, color = 0xFFFFFF, amount = 0}: KeyParams): Lock => {
+    let tile = Tile({ path: "", room, solid: true, type: ObjectType.Lock });
 
     return {
         ...tile,
+
+        color,
+
+        // Number of keys required to unlock this
+        initialAmount: amount,
+        amount,
+
+        // Gets the color
+        getColor(): Color {
+            return this.color;
+        },
+
+        // Sets the amount of keys
+        setKeys(amount: number) {
+            this.amount = amount;
+
+            if (this.amount <= 0)
+                this.destroy();
+        },
+
+        // Subtracts from the amount of keys needed
+        subtractKeys(amount: number) {
+            this.setKeys(this.amount - amount);
+        },
+
+        // Attempts to use a key on the lock
+        useKey(color: Color, amount: number = 0) {
+            if (this.color === color) {
+                this.subtractKeys(amount);
+            }
+        },
 
         // Draws the tile
         draw() {
@@ -34,6 +74,18 @@ const Lock = ({room = null, color = 0xFFFFFF}: KeyParams): Lock => {
         // Color of the key
         applyFilters() {
             this.drawer.changeColor("lock", color);
+        },
+
+        // Override of update(), updates key amount to what it should be and deletes tile if it is low enough
+        update() {
+            const collectedKeys = this.level.getCollectedKeys();
+
+            // Finds what the amount should be at this point
+            const amount = this.initialAmount - (collectedKeys[this.color] ?? 0)
+
+            if (this.amount !== amount) {
+                this.setKeys(amount);
+            }
         }
     }
 }
