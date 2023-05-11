@@ -3,6 +3,7 @@ import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 import { Color } from "../../utils/types";
 import { ObjectType } from "../../utils/enums";
+import { Point } from "../../utils/Point";
 
 // This represents a key which can be collected
 type Lock = Tile & {
@@ -11,7 +12,8 @@ type Lock = Tile & {
     amount: number,
     getColor: () => Color,
     setKeys: (amount: number) => void,
-    subtractKeys: (amount: number) => void
+    subtractKeys: (amount: number) => void,
+    drawKeyText: () => void
 }
 
 type KeyParams = {
@@ -20,7 +22,7 @@ type KeyParams = {
     amount?: number
 }
 
-const Lock = ({room = null, color = 0xFFFFFF, amount = 0}: KeyParams): Lock => {
+const Lock = ({room = null, color = 0xFFFFFF, amount = 1}: KeyParams): Lock => {
     let tile = Tile({ path: "", room, solid: true, type: ObjectType.Lock });
 
     return {
@@ -43,6 +45,9 @@ const Lock = ({room = null, color = 0xFFFFFF, amount = 0}: KeyParams): Lock => {
 
             if (this.amount <= 0)
                 this.destroy();
+            else {
+                this.drawKeyText();
+            }
         },
 
         // Subtracts from the amount of keys needed
@@ -51,16 +56,23 @@ const Lock = ({room = null, color = 0xFFFFFF, amount = 0}: KeyParams): Lock => {
         },
 
         // Attempts to use a key on the lock
-        useKey(color: Color, amount: number = 0) {
+        useKey(color: Color, amount: number = 1) {
             if (this.color === color) {
                 this.subtractKeys(amount);
             }
         },
 
+        // Draws text based on the number of keys needed
+        drawKeyText() {
+            this.drawer.delete("text");
+            this.drawer.drawCenteredText("text", this.position, this.amount.toString());
+        },
+
         // Draws the tile
         draw() {
-            this.drawer.draw("wall", this.position, PIXI.Sprite.from("./assets/tiles/standard_wall.png"));
-            this.drawer.draw("lock", this.position, PIXI.Sprite.from("./assets/tiles/lock.png"));
+            this.drawer.draw("wall", this.position, PIXI.Sprite.from("./assets/standard_wall.png"));
+            this.drawer.draw("lock", this.position, PIXI.Sprite.from("./assets/lock.png"));
+            this.drawKeyText();
 
             this.applyFilters();
         },
@@ -69,6 +81,7 @@ const Lock = ({room = null, color = 0xFFFFFF, amount = 0}: KeyParams): Lock => {
         deleteSprite() {
             this.drawer.delete("wall");
             this.drawer.delete("lock");
+            this.drawer.delete("text");
         },
 
         // Color of the key

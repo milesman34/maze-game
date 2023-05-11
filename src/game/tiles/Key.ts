@@ -16,7 +16,7 @@ type KeyParams = {
 }
 
 const Key = ({room = null, color = 0xFFFFFF}: KeyParams): Key => {
-    let tile = Tile({ path: "./assets/tiles/key.png", room, solid: false, type: ObjectType.Key });
+    let tile = Tile({ path: "./assets/key.png", room, solid: false, type: ObjectType.Key });
 
     return {
         ...tile,

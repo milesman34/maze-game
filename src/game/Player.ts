@@ -75,7 +75,7 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
             const newPosition = this.position.add(offset);
 
             // Check if current position is an end position
-            if (this.room.isEndPosition(newPosition)) {
+            if (this.room.isRoomLink(newPosition)) {
                 // Now we need to switch to the next room
                 const nextPos = this.room.getRoomLinkAt(newPosition);
 

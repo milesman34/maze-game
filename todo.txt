@@ -1,16 +1,5 @@
 Add key/lock system (may require ways to color an object dynamically), probably will be exclusive to each screen
 Add energy system eventually?
 
-Key/lock system could have each level keep track of the position of keys and their colors (which will be important, maybe link to constants, generate key textures)
-For keys, use some sort of record that links key colors (name of color?) to a list of key positions, so one color can have multiple keys
-For locks, use some sort of record that links key colors to a list of lock positions, when the required key is collected the locks are all removed
-Track how many keys of a certain color are collected
-
-Yeah, mapping keys/locks based off their color seems like the best call here
-
-If I figure out how to render it, I could also have special locks which require multiple of a specific colored key to unlock, and they display how many more keys of that color are required
-
-Actually, instead of telling all locks when a key has been collected, we can only update the locks on screen, then when we load another room, update the locks based on level key data.
-
-Locks are tricky because I have to render a lock over a wall. To do that, maybe I will need to have some ability to change the definition of a sprite for a Tile object to be a container,
-or maybe override the draw/deleteSprite methods to handle this. Maybe I should implement a better way for drawing objects.
+Key/lock system seems to work now, but I'll still need to figure out a way to display if it needs >1 key (work with Pixi.js text maybe?)
+Maybe I could find some way to display what keys the player has, but that would be difficult

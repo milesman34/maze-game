@@ -14,6 +14,7 @@ type Tile = {
     room: Room,
     type: ObjectType,
     solid: boolean,
+    path: string,
     isSolid: () => boolean,
     getType: () => ObjectType,
     setRoom: (room: Room) => void,
@@ -57,6 +58,9 @@ const Tile = ({
 
         // Is the object solid?
         solid,
+
+        // Path to the image file for the tile
+        path,
         
         isSolid(): boolean {
             return this.solid;

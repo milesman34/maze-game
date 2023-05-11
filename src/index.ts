@@ -15,7 +15,7 @@ $("#canvas-container").append(app.view as any);
 let game = Game(GameState.Game);
 
 // Sets the room for the game
-game.loadLevel(levels.level1);
+game.loadLevel(levels.locked);
 
 // Add keypress event listener
 document.addEventListener("keydown", event => {

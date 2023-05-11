@@ -17,6 +17,10 @@ const gen2DArray = <T>(rows: number, cols: number, item: T): Array<Array<T>> => 
     return result;
 }
 
+// Is an object empty?
+const isObjectEmpty = (obj: Object) => Object.keys(obj).length === 0;
+
 export {
-    gen2DArray
+    gen2DArray,
+    isObjectEmpty
 }

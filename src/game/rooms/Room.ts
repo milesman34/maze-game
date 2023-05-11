@@ -27,7 +27,7 @@ type Room = {
     level: Level,
     tileSize: number,
     startPos: Point,
-    endPositions: Record<PointString, RoomLink>,
+    roomLinks: Record<PointString, RoomLink>,
     objectTable: ObjectTable,
     getStartPos: () => Point,
     getWidth: () => number,
@@ -42,7 +42,7 @@ type Room = {
     isPositionValid: (pos: Point) => boolean,
     getObjectAt: (pos: Point) => Tile,
     removeObjectAt: (pos: Point) => void,
-    isEndPosition: (pos: Point) => boolean,
+    isRoomLink: (pos: Point) => boolean,
     getRoomLinkAt: (pos: Point) => RoomLink,
     iterate: (fn: IterateFunction) => void
 }
@@ -53,7 +53,7 @@ type RoomParams = {
     startPos?: Point,
     level?: Level,
     scale?: number,
-    endPositions?: Record<PointString, RoomLink>
+    roomLinks?: Record<PointString, RoomLink>
 }
 
 const Room = ({
@@ -66,7 +66,7 @@ const Room = ({
     scale = 1,
 
     // Track end positions, mapping position to object of form (room name, position)
-    endPositions = {}
+    roomLinks = {}
 }: RoomParams = {}): Room => {
     let object: Room = {
         // Room dimensions
@@ -85,8 +85,8 @@ const Room = ({
         // Starting position
         startPos,
 
-        // List of end positions
-        endPositions,
+        // List of links to other rooms
+        roomLinks,
 
         // Creates the 2D object array (for consistency, index with [x][y])
         objectTable: ObjectTable(width, height),
@@ -200,13 +200,13 @@ const Room = ({
         },
 
         // Returns if a given position is an end position
-        isEndPosition(pos: Point): boolean {
-            return pos.toString() in this.endPositions;
+        isRoomLink(pos: Point): boolean {
+            return pos.toString() in this.roomLinks;
         },
 
         // Gets the link to the next room based on an end position
         getRoomLinkAt(pos: Point): RoomLink {
-            return this.endPositions[pos.toString()];
+            return this.roomLinks[pos.toString()];
         },
 
         // Iterates over the objects in the room

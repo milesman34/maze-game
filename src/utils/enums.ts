@@ -18,7 +18,8 @@ enum ObjectType {
     Wall,
     Coin,
     Key,
-    Lock
+    Lock,
+    LevelEnd
 }
 
 export {
