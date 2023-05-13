@@ -18,12 +18,16 @@ type Level = {
     rooms: RoomCollection,
     room: Room
     score: number,
+    steps: number,
     player: Player,
     roomMap: Record<string, Room>,
     collectedKeys: Record<Color, number>,
     getScore: () => number,
     setScore: (score: number) => void,
     addScore: (score: number) => void,
+    getSteps: () => number,
+    setSteps: (steps: number) => void,
+    incrementSteps: () => void,
     getPlayer: () => Player,
     getRoom: () => Room,
     setRoom: (room: Room) => void,
@@ -62,6 +66,9 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         
         // Current score
         score: 0,
+
+        // Number of steps made by the player
+        steps: 0,
         
         // Player object
         player: null,
@@ -86,6 +93,22 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Adds to the current score
         addScore(amount: number) {
             this.setScore(this.score + amount);
+        },
+
+        // Gets the current steps
+        getSteps(): number {
+            return this.steps;
+        },
+
+        // Sets the current number of steps
+        setSteps(steps: number) {
+            this.steps = steps;
+            $("#steps-container").text(`Steps: ${this.steps}`);
+        },
+
+        // Increments the number of steps
+        incrementSteps() {
+            this.setSteps(this.steps + 1);
         },
         
         // Gets the current player
@@ -183,6 +206,7 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
     }
     
     object.setScore(0);
+    object.setSteps(0);
     
     return object;
 };

@@ -81,6 +81,8 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
 
                 this.level.loadRoomFromLink(nextPos);
 
+                this.level.incrementSteps();
+
                 return;
             }
 
@@ -88,6 +90,8 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
                 this.deleteSprite();
                 this.position = this.position.add(offset);
                 this.draw();
+
+                this.level.incrementSteps();
 
                 // Gets the object at that position and handles collision aspects
                 let object = this.room.getObjectAt(this.position);

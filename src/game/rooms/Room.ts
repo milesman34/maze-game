@@ -263,8 +263,6 @@ const Room = ({
 
                 direction: newDirection
             });
-
-            console.log(this.roomLinks);
         },
 
         // Returns if a given position is an end position

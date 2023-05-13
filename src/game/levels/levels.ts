@@ -64,10 +64,10 @@ const levels = LevelTemplate.makeTemplates([
                     "ABACAC  A",
                     "A A C A A",
                     "A A A A A",
-                    "A A AAAEA",
+                    "A A AAA A",
                     "  A   A A",
                     "A A AAA A",
-                    "A C CA  A",
+                    "A C CAAEA",
                     "AAAAAAAAA"
                 ],
                 charMap: {
