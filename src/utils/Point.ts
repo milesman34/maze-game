@@ -30,6 +30,14 @@ const Point = (x: number, y: number): Point => ({
     }
 });
 
+// Generates a Point from a PointString
+Point.fromPointString = (string: PointString): Point => {
+    let x = parseInt(string.split(", ")[0].split("(")[1]);
+    let y = parseInt(string.split(", ")[1].split(")")[0]);
+
+    return Point(x, y);
+}
+
 export {
     Point, PointString
 };

@@ -7,13 +7,8 @@ import app from "../../app";
 import { RoomTemplate } from "./RoomTemplate";
 import Level from "../levels/Level";
 import { IterateFunction } from "../../utils/types";
-import { ObjectType } from "../../utils/enums";
-
-// This type represents a link to another room
-type RoomLink = {
-    name: string,
-    position: Point
-}
+import { directionOffsets, flipDirection } from "../../utils/enums";
+import { RoomLink } from "./RoomLink";
 
 // This type represents a map from characters to room objects
 type RoomCharMap = Record<PointString, Tile>;
@@ -21,6 +16,7 @@ type RoomCharMap = Record<PointString, Tile>;
 // This object represents a room in the game
 // The room handles drawing as well
 type Room = {
+    name: string,
     width: number,
     height: number,
     scale: number,
@@ -32,7 +28,9 @@ type Room = {
     getStartPos: () => Point,
     getWidth: () => number,
     getHeight: () => number,
+    makeObject: (tile: Tile) => Tile,
     loadFromLayout: (stringArray: Array<String>, charMap: RoomCharMap) => void,
+    loadObjects: (objects: Record<PointString, Tile>) => void,
     draw: () => void,
     unload: () => void,
     // getPixelWidth: () => number,
@@ -42,21 +40,26 @@ type Room = {
     isPositionValid: (pos: Point) => boolean,
     getObjectAt: (pos: Point) => Tile,
     removeObjectAt: (pos: Point) => void,
+    setRoomLinkSource: (link: RoomLink) => void,
+    setRoomLinkDestination: (link: RoomLink) => void,
     isRoomLink: (pos: Point) => boolean,
     getRoomLinkAt: (pos: Point) => RoomLink,
     iterate: (fn: IterateFunction) => void
 }
 
 type RoomParams = {
+    name?: string,
     width?: number,
     height?: number,
     startPos?: Point,
     level?: Level,
     scale?: number,
-    roomLinks?: Record<PointString, RoomLink>
+    roomLinks?: Array<RoomLink>
 }
 
 const Room = ({
+    name = "",
+
     width = constants.numTiles, 
     height = constants.numTiles,
     
@@ -66,9 +69,12 @@ const Room = ({
     scale = 1,
 
     // Track end positions, mapping position to object of form (room name, position)
-    roomLinks = {}
+    roomLinks = []
 }: RoomParams = {}): Room => {
     let object: Room = {
+        // Name of the room
+        name,
+
         // Room dimensions
         width,
         height,
@@ -85,8 +91,8 @@ const Room = ({
         // Starting position
         startPos,
 
-        // List of links to other rooms
-        roomLinks,
+        // List of links to other rooms (recommended to be on outside of maze) (will require special loading)
+        roomLinks: {},
 
         // Creates the 2D object array (for consistency, index with [x][y])
         objectTable: ObjectTable(width, height),
@@ -106,6 +112,15 @@ const Room = ({
             return this.height;
         },
 
+        // Creates an instance of an object
+        makeObject(tile: Tile): Tile {
+            let newObject = _.cloneDeep(tile);
+            newObject.setRoom(this);
+            newObject.setLevel(this.level);  
+
+            return newObject;
+        },
+
         // Sets up a maze based on an array of strings that maps out the layout + an object that maps characters to game objects
         loadFromLayout(stringArray: Array<string>, charMap: RoomCharMap) {
             // Reset object table if dimensions are off
@@ -122,15 +137,26 @@ const Room = ({
                     // The character maps to something in the map, so we know the given object exists there
                     if (char in charMap) {
                         // We need to find a better way to handle making sure its a unique object, maybe a dedicated copy function which can handle arrays or objects
-                        let newObject = _.cloneDeep(charMap[char]);
-                        newObject.setRoom(this);
-                        newObject.setLevel(this.level);
+                        let newObject = this.makeObject(charMap[char]);
                         newObject.setPosition(Point(col, row));
 
                         this.objectTable.setObjectWithRow(row, col, newObject);
                     }
                 }
             }
+        },
+
+        // Loads objects from a record into the room
+        loadObjects(objects: Record<PointString, Tile>) {
+            Object.entries(objects).forEach(value => {
+                let position = Point.fromPointString(value[0]);
+                
+                let newObject = this.makeObject(value[1]);
+
+                newObject.setPosition(position);
+
+                this.objectTable.setObject(position.x, position.y, newObject);
+            });
         },
 
         // Draws the room
@@ -199,6 +225,48 @@ const Room = ({
             this.objectTable.removeObject(pos.x, pos.y);
         },
 
+        // Sets up a room link with this room being the source
+        setRoomLinkSource(link: RoomLink) {
+            // First we have to get the new position based on the directional offset
+            let newPoint = link.source.position.add(directionOffsets[link.direction]);
+
+            if (newPoint.toString() in this.roomLinks)
+                return;
+
+            this.roomLinks[newPoint.toString()] = RoomLink({
+                source: {
+                    name: this.name,
+                    position: link.source.position
+                },
+
+                destination: link.destination,
+
+                direction: link.direction
+            });
+        },
+
+        // Sets up a room link with this room being the destination
+        setRoomLinkDestination(link: RoomLink) {
+            let newDirection = flipDirection(link.direction);
+            let newPoint = link.destination.position.add(directionOffsets[newDirection]);
+
+            if (newPoint.toString() in this.roomLinks)
+                return;
+
+            this.roomLinks[newPoint.toString()] = RoomLink({
+                source: {
+                    name: this.name,
+                    position: link.destination.position
+                },
+
+                destination: link.source,
+
+                direction: newDirection
+            });
+
+            console.log(this.roomLinks);
+        },
+
         // Returns if a given position is an end position
         isRoomLink(pos: Point): boolean {
             return pos.toString() in this.roomLinks;
@@ -215,6 +283,11 @@ const Room = ({
         }
     };
 
+    // Set up all room links sourced from this room
+    roomLinks.forEach(link => {
+        object.setRoomLinkSource(link);
+    });
+
     return object;
 };
 
@@ -229,11 +302,16 @@ Room.loadFromLayout = (level: Level, stringArray: Array<string>, charMap: RoomCh
 
 // Loads a room from a template
 Room.loadFromTemplate = (level: Level, roomTemplate: RoomTemplate): Room => {
-    return Room.loadFromLayout(level, roomTemplate.stringArray, roomTemplate.charMap, roomTemplate.params);
+    // let room = Room.loadFromLayout(level, roomTemplate.stringArray, roomTemplate.charMap, roomTemplate.params);
+    let room = Room({level, name: roomTemplate.name, roomLinks: roomTemplate.roomLinks, ...roomTemplate.params});
+
+    room.loadFromLayout(roomTemplate.stringArray, roomTemplate.charMap);
+    room.loadObjects(roomTemplate.objects);
+
+    return room;
 }
 
 export {
-    RoomLink,
     Room,
     RoomCharMap,
     RoomParams

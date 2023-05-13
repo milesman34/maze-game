@@ -1,5 +1,6 @@
-Add key/lock system (may require ways to color an object dynamically), probably will be exclusive to each screen
-Add energy system eventually?
+Design the current Locked level + 1 or 2 more levels for testing
+Design level select screen (pick between levels, shows best total score)
+Add portal system (teleport between parts of maze, based on colors) (portal contains color + tag for telling between them)
+Make tooling/level design less painful to use?
 
-Key/lock system seems to work now, but I'll still need to figure out a way to display if it needs >1 key (work with Pixi.js text maybe?)
-Maybe I could find some way to display what keys the player has, but that would be difficult
+Honestly to make level design work I'd need to implement a level editor, and that seems really difficult.

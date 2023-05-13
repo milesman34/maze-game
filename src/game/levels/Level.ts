@@ -1,11 +1,13 @@
 import * as $ from "jquery"
 import Game from "../Game"
 import Player from "../Player"
-import { Room, RoomLink } from "../rooms/Room"
+import { Room } from "../rooms/Room"
 import { RoomCollection } from "../rooms/RoomTemplate"
 import { LevelTemplate } from "./LevelTemplate"
 import { Color } from "../../utils/types"
 import Tile from "../tiles/Tile"
+import { RoomLink } from "../rooms/RoomLink"
+import { Point } from "../../utils/Point"
 
 // This object represents a level in the game
 // Each level has a series of rooms
@@ -27,7 +29,8 @@ type Level = {
     setRoom: (room: Room) => void,
     getRoomWithName: (name: string) => Room,
     load: () => void,
-    loadRoom: (roomLink: RoomLink) => void,
+    loadRoom: (name: string, position: Point) => void,
+    loadRoomFromLink: (roomLink: RoomLink) => void,
     deletePlayerSprite: () => void,
     collectKey: (color: Color) => void,
     getCollectedKeys: () => Record<Color, number>
@@ -121,22 +124,22 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
 
         // Loads the level for the first time (loading the starting room)
         load() {
-            this.loadRoom({ name: startingRoom });
+            this.loadRoom(startingRoom);
         },
         
         // Loads a room from a template
         // Starting position can optionally be provided
-        loadRoom(roomLink: RoomLink) {
+        loadRoom(name: string, position: Point = null) {
             // Unloads old room if needed
             this.room?.unload();
             
             // Sets up the current room
-            this.room = this.getRoomWithName(roomLink.name);
+            this.room = this.getRoomWithName(name);
             
             // if called with Level.load, the RoomLink object is not provided a position so we default to the room's starting position
             this.player = Player({
                 level: this,
-                position: roomLink.position ?? this.room.getStartPos(),
+                position: position ?? this.room.getStartPos(),
                 room: this.room
             });
 
@@ -145,6 +148,14 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             this.player.draw();
             
             this.room.draw();
+        },
+
+        // Loads a room using a RoomLink
+        loadRoomFromLink(roomLink: RoomLink) {
+            this.loadRoom(roomLink.destination.name, roomLink.destination.position);
+
+            // Sets up link back to the room that called it
+            this.room.setRoomLinkDestination(roomLink);
         },
 
         // Deletes the player's sprite

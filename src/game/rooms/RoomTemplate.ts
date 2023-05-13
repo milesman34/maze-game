@@ -1,4 +1,7 @@
+import { PointString } from "../../utils/Point";
+import Tile from "../tiles/Tile";
 import { RoomCharMap, RoomParams } from "./Room";
+import { RoomLink } from "./RoomLink";
 
 // This type represents a collection of rooms mapped via their names
 type RoomCollection = Record<string, RoomTemplate>
@@ -8,7 +11,9 @@ type RoomTemplate = {
     name: string,
     stringArray: Array<string>,
     charMap: RoomCharMap,
-    params: RoomParams
+    objects: Record<PointString, Tile>,
+    params: RoomParams,
+    roomLinks: Array<RoomLink>,
     getName: () => string
 }
 
@@ -16,14 +21,24 @@ type RoomTemplateParams = {
     name: string,
     stringArray: Array<string>,
     charMap: RoomCharMap,
-    params: RoomParams
+    objects?: Record<PointString, Tile>,
+    params: RoomParams,
+    roomLinks?: Array<RoomLink>
 }
 
-const RoomTemplate = ({name, stringArray, charMap, params}: RoomTemplateParams): RoomTemplate => ({
+const RoomTemplate = ({name, stringArray, charMap, objects = {}, params, roomLinks}: RoomTemplateParams): RoomTemplate => ({
     name,
     stringArray,
     charMap,
+    
+    // There could be extra objects which are mapped based on their position
+    objects,
+
+    // Extra parameters for the room
     params,
+
+    // Links from this room to another room (only need to be defined on one side)
+    roomLinks,
 
     getName(): string {
         return this.name;

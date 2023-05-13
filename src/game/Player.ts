@@ -79,7 +79,7 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
                 // Now we need to switch to the next room
                 const nextPos = this.room.getRoomLinkAt(newPosition);
 
-                this.level.loadRoom(nextPos);
+                this.level.loadRoomFromLink(nextPos);
 
                 return;
             }
