@@ -16,7 +16,9 @@ type Game = {
     getLevel: () => Level,
     setLevel: (level: Level) => void,
     loadLevel: (template: LevelTemplate) => void,
+    reloadCurrentLevel: () => void,
     getState: () => GameState,
+    isState: (state: GameState) => boolean
     setState: (state: GameState) => void,
     handleKeypress: (key: string) => void,
     setCoins: (coins: number) => void,
@@ -63,10 +65,20 @@ const Game = (state: GameState = GameState.Title) => {
             
             this.level.load();
         },
+
+        // Reloads the current level
+        reloadCurrentLevel() {
+            this.loadLevel(levels[this.level.name]);  
+        },
         
         // Gets the current game state
         getState(): GameState {
             return this.state;
+        },
+
+        // Returns if the current state is equal to the given one
+        isState(state: GameState): boolean {
+            return this.state === state;
         },
         
         // Sets the new game state
@@ -105,7 +117,7 @@ const Game = (state: GameState = GameState.Title) => {
         
         // Handles a keypress (pass event.key)
         handleKeypress(key: string) {
-            if (this.state === GameState.Game) {
+            if (this.isState(GameState.Game)) {
                 this.player.handleKeypress(key);
             }
         },
