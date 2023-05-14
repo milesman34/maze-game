@@ -91,6 +91,10 @@ const Game = (state: GameState = GameState.Title) => {
                     levelSelect.updateStats(this.level.name, this.coins, this.steps);
                 }
                 break;
+
+                case GameState.LevelEnd:
+                $("#level-end-screen").show();
+                break;
                 
                 case GameState.Game:
                 $("#canvas-container").show();

@@ -55,18 +55,6 @@ html, body {
     user-select: none;
 }
 
-#start-button {
-    border: 1px solid white;
-    margin: 5px;
-    padding: 10px;
-    user-select: none;
-}
-
-#start-button:hover {
-    color: black;
-    background-color: white;
-}
-
 #level-select-screen {
     display: grid;
     grid-template-rows: 10% auto;
@@ -102,4 +90,35 @@ html, body {
 .level-select-row:hover {
     background-color: white;
     color: black;
+}
+
+#level-end-screen {
+    display: grid;
+    grid-template-rows: 25% 10% 35% auto;
+    user-select: none;
+}
+
+#level-end-title {
+    font-size: 150%;
+}
+
+.app-button {
+    border: 1px solid white;
+    margin: 5px;
+    padding: 10px;
+    user-select: none;
+}
+
+.app-button:hover {
+    background-color: white;
+    color: black;
+}
+
+#level-end-buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+#level-restart-button, #select-new-level-button {
+    width: 200px;
 }

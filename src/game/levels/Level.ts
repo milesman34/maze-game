@@ -214,7 +214,7 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             this.game.setCoins(this.score);
             this.game.setSteps(this.steps);
 
-            this.game.setState(GameState.LevelSelect);
+            this.game.setState(GameState.LevelEnd);
         }
     }
     

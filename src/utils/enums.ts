@@ -4,6 +4,7 @@ import { Point } from "./Point";
 enum GameState {
     Title,
     LevelSelect,
+    LevelEnd,
     Game
 }
 

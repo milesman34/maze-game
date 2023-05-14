@@ -2,3 +2,5 @@ Design level select screen (pick between levels, shows best total score)
 Add portal system (teleport between parts of maze, based on colors) (portal contains color + tag for telling between them)
 
 While the level select screen works now, I still need to figure out a way to display the coins/steps stats after completing a level, either with a level end screen or something else?
+
+Level end screen will display the level you completed + the coins/steps stats (as well as the high scores, maybe move the high scores to the Game object?), and give an option either to restart the level or select a new one.

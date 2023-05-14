@@ -13,7 +13,7 @@ $("#canvas-container").append(app.view as any);
 // Sets up the game
 let game = Game();
 
-game.setState(GameState.Title);
+game.setState(GameState.LevelEnd);
 
 // Add keypress event listener
 document.addEventListener("keydown", event => {
