@@ -1,4 +1,5 @@
 import { GameState } from '../utils/enums';
+import { localStorageLoadInt } from '../utils/utils';
 import Game from './Game';
 import { LevelCollection, LevelTemplate } from './levels/LevelTemplate';
 import levels from './levels/levels';
@@ -18,8 +19,8 @@ type LevelSelectEntry = {
 // Generates a LevelSelectEntry
 const LevelSelectEntry = (name: string, template: LevelTemplate): LevelSelectEntry => ({
     name,
-    mostCoins: null,
-    leastSteps: null,
+    mostCoins: localStorageLoadInt(`${name}-mostCoins`, null),
+    leastSteps: localStorageLoadInt(`${name}-leastSteps`, null),
     template,
 
     // Generates a display string for a value (name should not be plural)
@@ -92,11 +93,13 @@ const LevelSelectScreen = (game: Game, levels: LevelCollection): LevelSelectScre
                     // Update best coins/steps if they are better than the previous ones
                     if (entry.mostCoins === null || coins > entry.mostCoins) {
                         entry.mostCoins = coins;
+                        localStorage.setItem(`${entry.name}-mostCoins`, coins.toString());
                         changed = true;
                     }
 
                     if (entry.leastSteps === null || steps < entry.leastSteps) {
                         entry.leastSteps = steps;
+                        localStorage.setItem(`${entry.name}-leastSteps`, steps.toString());
                         changed = true;
                     }
                 }

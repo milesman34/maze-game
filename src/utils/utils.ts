@@ -20,7 +20,19 @@ const gen2DArray = <T>(rows: number, cols: number, item: T): Array<Array<T>> => 
 // Is an object empty?
 const isObjectEmpty = (obj: Object) => Object.keys(obj).length === 0;
 
+// Attempts to load an integer value from localstorage
+const localStorageLoadInt = (name: string, defaultValue: number = 0) => {
+    let local = localStorage.getItem(name);
+
+    if (local === null) {
+        return defaultValue;
+    } else {
+        return parseInt(local);
+    }
+}
+
 export {
     gen2DArray,
-    isObjectEmpty
+    isObjectEmpty,
+    localStorageLoadInt
 }
