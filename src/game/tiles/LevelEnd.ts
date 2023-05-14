@@ -13,7 +13,7 @@ const LevelEnd = (room: Room = null): LevelEnd => {
         type: ObjectType.LevelEnd,
 
         handleCollision() {
-            alert("You win!");
+            this.level.endLevel();
         }
     });
 

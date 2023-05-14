@@ -8,6 +8,7 @@ import { Color } from "../../utils/types"
 import Tile from "../tiles/Tile"
 import { RoomLink } from "../rooms/RoomLink"
 import { Point } from "../../utils/Point"
+import { GameState } from "../../utils/enums"
 
 // This object represents a level in the game
 // Each level has a series of rooms
@@ -37,7 +38,8 @@ type Level = {
     loadRoomFromLink: (roomLink: RoomLink) => void,
     deletePlayerSprite: () => void,
     collectKey: (color: Color) => void,
-    getCollectedKeys: () => Record<Color, number>
+    getCollectedKeys: () => Record<Color, number>,
+    endLevel: () => void
 }
 
 type LevelParams = {
@@ -202,6 +204,12 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Gets the collected keys
         getCollectedKeys() {
             return this.collectedKeys;
+        },
+
+        // Ends the level
+        endLevel() {
+            this.room?.unload();
+            this.game.setState(GameState.LevelSelect);
         }
     }
     
