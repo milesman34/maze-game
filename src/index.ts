@@ -27,6 +27,14 @@ $("#start-button").on("click", function() {
     }
 });
 
+// Add onclick listener for exit level button
+$("#exit-level-button").on("click", function() {
+    if (game.isState(GameState.Game)) {
+        game.level.unloadRoom();
+        game.setState(GameState.LevelSelect);
+    }
+});
+
 // Add onclick listener for restart button
 $("#level-restart-button").on("click", function() {
     if (game.isState(GameState.LevelEnd)) {

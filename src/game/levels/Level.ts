@@ -34,6 +34,7 @@ type Level = {
     setRoom: (room: Room) => void,
     getRoomWithName: (name: string) => Room,
     load: () => void,
+    unloadRoom: () => void,
     loadRoom: (name: string, position: Point) => void,
     loadRoomFromLink: (roomLink: RoomLink) => void,
     deletePlayerSprite: () => void,
@@ -151,6 +152,11 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         load() {
             this.loadRoom(startingRoom);
         },
+
+        // Unloads the current room
+        unloadRoom() {
+            this.room?.unload();
+        },
         
         // Loads a room from a template
         // Starting position can optionally be provided
@@ -208,7 +214,7 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
 
         // Ends the level
         endLevel() {
-            this.room?.unload();
+            this.unloadRoom();
 
             // Tell the game to update the level select screen with the coins and steps from that level
             this.game.setCoins(this.score);

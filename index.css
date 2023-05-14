@@ -35,7 +35,7 @@ html, body {
 
     display: grid;
 
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 25% 40% 25% 10%;
 }
 
 .flex-center {
