@@ -1,4 +1,4 @@
 Design level select screen (pick between levels, shows best total score)
 Add portal system (teleport between parts of maze, based on colors) (portal contains color + tag for telling between them)
 
-Ok so for the level select screen, I'd need to show/hide the canvas/game based on which state things are in, then add some sort of list that shows all levels, maybe as a sort of table?
+While the level select screen works now, I still need to figure out a way to display the coins/steps stats after completing a level, either with a level end screen or something else?

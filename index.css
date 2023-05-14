@@ -70,10 +70,12 @@ html, body {
 #level-select-screen {
     display: grid;
     grid-template-rows: 10% auto;
+    user-select: none;
 }
 
 #level-select-header {
     font-size: 125%;
+    user-select: none;
 }
 
 #level-select-container {

@@ -34,7 +34,7 @@ const Game = (state: GameState = GameState.Title) => {
         
         // Reference to player
         player: null,
-
+        
         // Track the coins/steps from the most recent level
         coins: 0,
         steps: 0,
@@ -72,7 +72,7 @@ const Game = (state: GameState = GameState.Title) => {
         // Sets the new game state
         setState(state: GameState) {
             this.state = state;
-
+            
             $("#main-app").children().hide();
             $("#header-ui").hide();
             
@@ -83,9 +83,9 @@ const Game = (state: GameState = GameState.Title) => {
                 
                 case GameState.LevelSelect:
                 $("#level-select-screen").show();
-
+                
                 let levelSelect = LevelSelectScreen.getInstance(this);
-
+                
                 // steps cannot be zero if a level was completed
                 if (this.steps > 0) {
                     levelSelect.updateStats(this.level.name, this.coins, this.steps);
@@ -105,12 +105,12 @@ const Game = (state: GameState = GameState.Title) => {
                 this.player.handleKeypress(key);
             }
         },
-
+        
         // Sets the number of coins
         setCoins(coins: number) {
             this.coins = coins;
         },
-
+        
         // Sets the number of steps
         setSteps(steps: number) {
             this.steps = steps;
