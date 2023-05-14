@@ -1,4 +1,5 @@
 import { GameState } from "../utils/enums";
+import { generateTextForValue } from "../utils/utils";
 import LevelSelectScreen from "./LevelSelectScreen";
 import Player from "./Player";
 import Level from "./levels/Level";
@@ -88,6 +89,8 @@ const Game = (state: GameState = GameState.Title) => {
             $("#main-app").children().hide();
             $("#header-ui").hide();
             
+            let levelSelect = LevelSelectScreen.getInstance(this);
+            
             switch (this.state) {
                 case GameState.Title:
                 $("#title-screen").show();
@@ -95,17 +98,23 @@ const Game = (state: GameState = GameState.Title) => {
                 
                 case GameState.LevelSelect:
                 $("#level-select-screen").show();
-                
-                let levelSelect = LevelSelectScreen.getInstance(this);
+                break;
+
+                case GameState.LevelEnd:
+                $("#level-end-screen").show();
+
+                $("#level-end-title").text(`Completed ${this.level.name}`);
                 
                 // steps cannot be zero if a level was completed
                 if (this.steps > 0) {
                     levelSelect.updateStats(this.level.name, this.coins, this.steps);
                 }
-                break;
 
-                case GameState.LevelEnd:
-                $("#level-end-screen").show();
+                // Let's get the best coins/steps from the level selector
+                let levelEntry = levelSelect.getLevel(this.level.name);
+
+                $("#level-end-coins").text(`${generateTextForValue(this.coins, "coin")} (best: ${generateTextForValue(levelEntry.mostCoins, "coin")})`);
+                $("#level-end-steps").text(`${generateTextForValue(this.steps, "step")} (best: ${generateTextForValue(levelEntry.leastSteps, "step")})`);
                 break;
                 
                 case GameState.Game:

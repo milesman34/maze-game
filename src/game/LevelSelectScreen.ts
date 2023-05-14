@@ -1,5 +1,5 @@
 import { GameState } from '../utils/enums';
-import { localStorageLoadInt } from '../utils/utils';
+import { generateTextForValue, localStorageLoadInt } from '../utils/utils';
 import Game from './Game';
 import { LevelCollection, LevelTemplate } from './levels/LevelTemplate';
 import levels from './levels/levels';
@@ -11,7 +11,6 @@ type LevelSelectEntry = {
     mostCoins: number,
     leastSteps: number,
     template: LevelTemplate,
-    generateTextForValue: (num: number, name: string) => string,
     generateID: () => string,
     generateHTML: () => string
 }
@@ -23,15 +22,6 @@ const LevelSelectEntry = (name: string, template: LevelTemplate): LevelSelectEnt
     leastSteps: localStorageLoadInt(`${name}-leastSteps`, null),
     template,
 
-    // Generates a display string for a value (name should not be plural)
-    generateTextForValue(num: number, name: string): string {
-        if (num === null) {
-            return `--- ${name}s`;
-        } else {
-            return `${num} ${name}${num === 1 ? "" : "s"}`;
-        }
-    },
-
     // Generates the id to use for this entry for html (replace spaces with underscores to make it work with html)
     generateID(): string {
         return `level-select--${this.name.split(" ").join("_")}`;
@@ -42,8 +32,8 @@ const LevelSelectEntry = (name: string, template: LevelTemplate): LevelSelectEnt
         return [
             `<div id="${this.generateID()}" class="level-select-row">`,
             `<div class="level-select-name flex-center">${this.name}</div>`,
-            `<div class="level-select-best-coins" style="grid-column: 3;">${this.generateTextForValue(this.mostCoins, "coin")}</div>`,
-            `<div class="level-select-best-steps" style="grid-column: 4;">${this.generateTextForValue(this.leastSteps, "step")}</div>`
+            `<div class="level-select-best-coins" style="grid-column: 3;">${generateTextForValue(this.mostCoins, "coin")}</div>`,
+            `<div class="level-select-best-steps" style="grid-column: 4;">${generateTextForValue(this.leastSteps, "step")}</div>`
         ].join("");
     }
 })
@@ -54,6 +44,7 @@ type LevelSelectScreen = {
     levels: Array<LevelSelectEntry>,
     addLevel: (name: string, template: LevelTemplate) => void,
     reloadHTML: () => void,
+    getLevel: (name: string) => LevelSelectEntry,
     updateStats: (name: string, coins: number, steps: number) => void
 }
 
@@ -82,6 +73,11 @@ const LevelSelectScreen = (game: Game, levels: LevelCollection): LevelSelectScre
                     this.game.loadLevel(levels[entry.name]);
                 });
             });
+        },
+
+        // Gets the level with the given name
+        getLevel(name: string): LevelSelectEntry {
+            return this.levels.filter((entry: LevelSelectEntry) => entry.name === name)[0];
         },
 
         // Updates the stats of a level
