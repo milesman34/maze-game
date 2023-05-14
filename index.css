@@ -44,3 +44,60 @@ html, body {
     align-items: center;
     justify-content: center;
 }
+
+#title-screen {
+    display: grid;
+    grid-template-rows: 50% 50%;
+}
+
+#title-container {
+    font-size: 200%;
+    user-select: none;
+}
+
+#start-button {
+    border: 1px solid white;
+    margin: 5px;
+    padding: 10px;
+    user-select: none;
+}
+
+#start-button:hover {
+    color: black;
+    background-color: white;
+}
+
+#level-select-screen {
+    display: grid;
+    grid-template-rows: 10% auto;
+}
+
+#level-select-header {
+    font-size: 125%;
+}
+
+#level-select-container {
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    height: 100%;
+}
+
+#level-select-container::-webkit-scrollbar {
+    display: none;
+  }
+
+.level-select-row {
+    border: 1px solid white;
+    padding: 5px;
+    padding-left: 1vw;
+
+    display: grid;
+    grid-template-columns: 25% auto 25% 25%;
+    user-select: none;
+}
+
+.level-select-row:hover {
+    background-color: white;
+    color: black;
+}

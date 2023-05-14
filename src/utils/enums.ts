@@ -3,6 +3,7 @@ import { Point } from "./Point";
 // Enum that represents the game state
 enum GameState {
     Title,
+    LevelSelect,
     Game
 }
 

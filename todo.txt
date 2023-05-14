@@ -1,6 +1,4 @@
-Design the current Locked level + 1 or 2 more levels for testing
 Design level select screen (pick between levels, shows best total score)
 Add portal system (teleport between parts of maze, based on colors) (portal contains color + tag for telling between them)
-Make tooling/level design less painful to use?
 
-Honestly to make level design work I'd need to implement a level editor, and that seems really difficult.
+Ok so for the level select screen, I'd need to show/hide the canvas/game based on which state things are in, then add some sort of list that shows all levels, maybe as a sort of table?
