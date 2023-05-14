@@ -52,7 +52,8 @@ type LevelSelectScreen = {
     game: Game,
     levels: Array<LevelSelectEntry>,
     addLevel: (name: string, template: LevelTemplate) => void,
-    reloadHTML: () => void
+    reloadHTML: () => void,
+    updateStats: (name: string, coins: number, steps: number) => void
 }
 
 const LevelSelectScreen = (game: Game, levels: LevelCollection): LevelSelectScreen => {
@@ -80,6 +81,29 @@ const LevelSelectScreen = (game: Game, levels: LevelCollection): LevelSelectScre
                     this.game.loadLevel(levels[entry.name]);
                 });
             });
+        },
+
+        // Updates the stats of a level
+        updateStats(name: string, coins: number, steps: number) {
+            let changed = false;
+
+            this.levels.forEach((entry: LevelSelectEntry) => {
+                if (entry.name === name) {
+                    // Update best coins/steps if they are better than the previous ones
+                    if (entry.mostCoins === null || coins > entry.mostCoins) {
+                        entry.mostCoins = coins;
+                        changed = true;
+                    }
+
+                    if (entry.leastSteps === null || steps < entry.leastSteps) {
+                        entry.leastSteps = steps;
+                        changed = true;
+                    }
+                }
+            });
+
+            if (changed)
+                this.reloadHTML();
         }
     }
 

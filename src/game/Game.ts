@@ -10,13 +10,17 @@ type Game = {
     state: GameState,
     level: Level,
     player: Player,
+    coins: number,
+    steps: number,
     setPlayer: (player: Player) => void,
     getLevel: () => Level,
     setLevel: (level: Level) => void,
     loadLevel: (template: LevelTemplate) => void,
     getState: () => GameState,
     setState: (state: GameState) => void,
-    handleKeypress: (key: string) => void
+    handleKeypress: (key: string) => void,
+    setCoins: (coins: number) => void,
+    setSteps: (steps: number) => void
 }
 
 // This object handles the game state management
@@ -30,6 +34,10 @@ const Game = (state: GameState = GameState.Title) => {
         
         // Reference to player
         player: null,
+
+        // Track the coins/steps from the most recent level
+        coins: 0,
+        steps: 0,
         
         // Sets the player
         setPlayer(player: Player) {
@@ -77,6 +85,11 @@ const Game = (state: GameState = GameState.Title) => {
                 $("#level-select-screen").show();
 
                 let levelSelect = LevelSelectScreen.getInstance(this);
+
+                // steps cannot be zero if a level was completed
+                if (this.steps > 0) {
+                    levelSelect.updateStats(this.level.name, this.coins, this.steps);
+                }
                 break;
                 
                 case GameState.Game:
@@ -91,6 +104,16 @@ const Game = (state: GameState = GameState.Title) => {
             if (this.state === GameState.Game) {
                 this.player.handleKeypress(key);
             }
+        },
+
+        // Sets the number of coins
+        setCoins(coins: number) {
+            this.coins = coins;
+        },
+
+        // Sets the number of steps
+        setSteps(steps: number) {
+            this.steps = steps;
         }
     }
     

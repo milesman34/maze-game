@@ -209,6 +209,11 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Ends the level
         endLevel() {
             this.room?.unload();
+
+            // Tell the game to update the level select screen with the coins and steps from that level
+            this.game.setCoins(this.score);
+            this.game.setSteps(this.steps);
+
             this.game.setState(GameState.LevelSelect);
         }
     }
