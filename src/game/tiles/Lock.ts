@@ -3,7 +3,6 @@ import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 import { Color } from "../../utils/types";
 import { ObjectType } from "../../utils/enums";
-import { Point } from "../../utils/Point";
 
 // This represents a key which can be collected
 type Lock = Tile & {
@@ -65,7 +64,10 @@ const Lock = ({room = null, color = 0xFFFFFF, amount = 1}: KeyParams): Lock => {
         // Draws text based on the number of keys needed
         drawKeyText() {
             this.drawer.delete("text");
-            this.drawer.drawCenteredText("text", this.position, this.amount.toString());
+
+            // Only render text if there is more than 1 needed key
+            if (this.amount > 1)
+                this.drawer.drawCenteredText("text", this.position, this.amount.toString());
         },
 
         // Draws the tile
