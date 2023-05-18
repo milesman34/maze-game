@@ -5,6 +5,7 @@ import { RoomTemplate } from "../rooms/RoomTemplate";
 import Key from "../tiles/Key";
 import LevelEnd from "../tiles/LevelEnd";
 import Lock from "../tiles/Lock";
+import WallWithMarker from "../tiles/WallWithMarker";
 import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
 import { LevelTemplate } from "./LevelTemplate";
 
@@ -128,21 +129,21 @@ const levels = LevelTemplate.makeTemplates([
             {
                 name: "hub",
                 stringArray: [
-                    "AAAAAAA AAAAAAA",
+                    "AAAAAAL LAAAAAA",
                     "AC           CA",
                     "A AAAAAAAAAAA A",
                     "A AC   F   CA A",
                     "A A AAAAAAA A A",
                     "A A AB   BA A A",
-                    "A A A AAA A A A",
+                    "M A A AAA A A K",
                     "  AGA AEA AIA  ",
-                    "A A A A A A A A",
+                    "M A A A A A A K",
                     "A A AB BA A A A",
                     "A A AAAAA A A A",
                     "A AC   H BA A A",
                     "A AAAAAAAAA A A",
                     "AC           CA",
-                    "AAAAAAA AAAAAAA",
+                    "AAAAAAJ JAAAAAA",
                 ],
                 charMap: {
                     ...defCharMap,
@@ -150,7 +151,11 @@ const levels = LevelTemplate.makeTemplates([
                     "F": Lock({ color: colors.blue }),
                     "G": Lock({ color: colors.red }),
                     "H": Lock({ color: colors.green }),
-                    "I": Lock({ color: colors.yellow })
+                    "I": Lock({ color: colors.yellow }),
+                    "J": WallWithMarker({ color: colors.blue }),
+                    "K": WallWithMarker({ color: colors.green }),
+                    "L": WallWithMarker({ color: colors.red }),
+                    "M": WallWithMarker({ color: colors.yellow })
                 },
                 params: {
                     startPos: Point(7, 1),
