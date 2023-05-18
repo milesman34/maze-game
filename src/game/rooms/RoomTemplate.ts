@@ -26,7 +26,7 @@ type RoomTemplateParams = {
     roomLinks?: Array<RoomLink>
 }
 
-const RoomTemplate = ({name, stringArray, charMap, objects = {}, params, roomLinks}: RoomTemplateParams): RoomTemplate => ({
+const RoomTemplate = ({name, stringArray, charMap, objects = {}, params, roomLinks = []}: RoomTemplateParams): RoomTemplate => ({
     name,
     stringArray,
     charMap,

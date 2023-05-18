@@ -289,9 +289,9 @@ const Room = ({
     };
 
     // Set up all room links sourced from this room
-    roomLinks.forEach(link => {
-        object.setRoomLinkSource(link);
-    });
+    // roomLinks.forEach(link => {
+    //     object.setRoomLinkSource(link);
+    // });
 
     return object;
 };

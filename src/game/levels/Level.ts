@@ -8,7 +8,7 @@ import { Color } from "../../utils/types"
 import Tile from "../tiles/Tile"
 import { RoomLink } from "../rooms/RoomLink"
 import { Point } from "../../utils/Point"
-import { GameState } from "../../utils/enums"
+import { GameState, ObjectType, flipDirection } from "../../utils/enums"
 
 // This object represents a level in the game
 // Each level has a series of rooms
@@ -22,6 +22,7 @@ type Level = {
     steps: number,
     player: Player,
     roomMap: Record<string, Room>,
+    roomLinkMap: Record<string, Array<RoomLink>>,
     collectedKeys: Record<Color, number>,
     getScore: () => number,
     setScore: (score: number) => void,
@@ -78,6 +79,9 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         
         // Maps room names to loaded rooms
         roomMap: {},
+
+        // Maps room names to a list of room links
+        roomLinkMap: {},
 
         // Set of collected keys (maps color to number)
         collectedKeys: {},
@@ -166,6 +170,15 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             
             // Sets up the current room
             this.room = this.getRoomWithName(name);
+
+            // Sets up room links for this room
+            let links = this.roomLinkMap[name];
+
+            if (links.length > 0) {
+                links.forEach((link: RoomLink) => {
+                    this.room.setRoomLinkSource(link);
+                });
+            }
             
             // if called with Level.load, the RoomLink object is not provided a position so we default to the room's starting position
             this.player = Player({
@@ -186,7 +199,7 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
             this.loadRoom(roomLink.destination.name, roomLink.destination.position);
 
             // Sets up link back to the room that called it
-            this.room.setRoomLinkDestination(roomLink);
+            // this.room.setRoomLinkDestination(roomLink);
         },
 
         // Deletes the player's sprite
@@ -226,6 +239,39 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
     
     object.setScore(0);
     object.setSteps(0);
+
+    // First set up the empty arrays for the roomLinkMap
+    Object.keys(rooms).forEach(key => {
+        object.roomLinkMap[key] = [];
+    });
+
+    // Then, set up all room links in advance
+    Object.entries(rooms).forEach(entry => {
+        let links = entry[1].roomLinks;
+
+        // forEach does not work with an empty list of room links
+        if (links.length === 0)
+            return;
+
+        links.forEach(link => {
+            // First set up the initial link to the next room
+            let startLink = link;
+
+            object.roomLinkMap[entry[0]].push(startLink);
+
+            // Now set up the link from the next room back to this one
+            let endLink = RoomLink.createForTemplate(
+                startLink.destination.position,
+                {
+                    name: entry[0],
+                    position: startLink.source.position
+                },
+                flipDirection(startLink.direction)
+            )
+
+            object.roomLinkMap[startLink.destination.name].push(endLink);
+        });
+    });
     
     return object;
 };
