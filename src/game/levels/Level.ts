@@ -197,9 +197,6 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
         // Loads a room using a RoomLink
         loadRoomFromLink(roomLink: RoomLink) {
             this.loadRoom(roomLink.destination.name, roomLink.destination.position);
-
-            // Sets up link back to the room that called it
-            // this.room.setRoomLinkDestination(roomLink);
         },
 
         // Deletes the player's sprite

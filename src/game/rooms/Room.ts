@@ -35,15 +35,11 @@ type Room = {
     loadObjects: (objects: Record<PointString, Tile>) => void,
     draw: () => void,
     unload: () => void,
-    // getPixelWidth: () => number,
-    // getPixelHeight: () => number,
-    // getCenterOffset: () => Point,
     calculatePosition: (pos: Point) => Point,
     isPositionValid: (pos: Point) => boolean,
     getObjectAt: (pos: Point) => Tile,
     removeObjectAt: (pos: Point) => void,
     setRoomLinkSource: (link: RoomLink) => void,
-    setRoomLinkDestination: (link: RoomLink) => void,
     isRoomLink: (pos: Point) => boolean,
     getRoomLinkAt: (pos: Point) => RoomLink,
     iterate: (fn: IterateFunction) => void
@@ -184,24 +180,6 @@ const Room = ({
             this.level.deletePlayerSprite();
         },
 
-        // // Calculates the number of pixels wide the room is
-        // getPixelWidth(): number {
-        //     return this.width * this.tileSize * this.scale;
-        // },
-
-        // // Calculates the number of pixels high the room is
-        // getPixelHeight(): number {
-        //     return this.height * this.tileSize * this.scale;
-        // },
-
-        // // Calculates the offset needed to center the drawn room
-        // getCenterOffset(): Point {
-        //     return Point(
-        //         Math.round((constants.canvasSize - this.getPixelWidth()) / 2),
-        //         Math.round((constants.canvasSize - this.getPixelHeight()) / 2),
-        //     );
-        // },
-
         // Calculates the position of an object adjusted to tileSize
         calculatePosition(pos: Point): Point {
             return Point(
@@ -252,26 +230,6 @@ const Room = ({
             });
         },
 
-        // Sets up a room link with this room being the destination
-        setRoomLinkDestination(link: RoomLink) {
-            let newDirection = flipDirection(link.direction);
-            let newPoint = link.destination.position.add(directionOffsets[newDirection]);
-
-            if (newPoint.toString() in this.roomLinks)
-                return;
-
-            this.roomLinks[newPoint.toString()] = RoomLink({
-                source: {
-                    name: this.name,
-                    position: link.destination.position
-                },
-
-                destination: link.source,
-
-                direction: newDirection
-            });
-        },
-
         // Returns if a given position is an end position
         isRoomLink(pos: Point): boolean {
             return pos.toString() in this.roomLinks;
@@ -287,11 +245,6 @@ const Room = ({
             this.objectTable.iterate(fn);
         }
     };
-
-    // Set up all room links sourced from this room
-    // roomLinks.forEach(link => {
-    //     object.setRoomLinkSource(link);
-    // });
 
     return object;
 };
