@@ -1,3 +1,5 @@
 Add portal system (teleport between parts of maze, based on colors) (portal contains color + tag for telling between them)
 
 Design some more levels to play
+
+It seems for portals I will have to define them on both sides as there isn't really a logical way to implement it otherwise

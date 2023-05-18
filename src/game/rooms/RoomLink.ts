@@ -44,4 +44,4 @@ RoomLink.createForTemplate = (source: Point, destination: RoomPosition, directio
     });
 }
 
-export { RoomLink }
+export { RoomLink, RoomPosition }

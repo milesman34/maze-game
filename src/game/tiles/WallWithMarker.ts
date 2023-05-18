@@ -12,7 +12,7 @@ type WallWithMarkerParams = {
     color: Color
 }
 
-const WallWithMarker = ({room = null, color = 0xFFFFFF}: WallWithMarkerParams): WallWithMarker => {
+const WallWithMarker = ({room = null, color}: WallWithMarkerParams): WallWithMarker => {
     let tile = Tile({ room, path: "", solid: true, type: ObjectType.Wall });
 
     let template = new PIXI.Graphics();

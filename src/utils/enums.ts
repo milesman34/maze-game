@@ -48,7 +48,8 @@ enum ObjectType {
     Coin,
     Key,
     Lock,
-    LevelEnd
+    LevelEnd,
+    Portal
 }
 
 export {

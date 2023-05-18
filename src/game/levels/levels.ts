@@ -5,6 +5,7 @@ import { RoomTemplate } from "../rooms/RoomTemplate";
 import Key from "../tiles/Key";
 import LevelEnd from "../tiles/LevelEnd";
 import Lock from "../tiles/Lock";
+import Portal from "../tiles/Portal";
 import WallWithMarker from "../tiles/WallWithMarker";
 import { blueCoin, standardCoin, standardWall } from "../tiles/tileTemplates";
 import { LevelTemplate } from "./LevelTemplate";
@@ -321,6 +322,64 @@ const levels = LevelTemplate.makeTemplates([
                 },
                 params: {
                     scale: 1
+                }
+            }
+        ])
+    },
+
+    {
+        name: "portal test 1",
+        startingRoom: "start",
+        rooms: RoomTemplate.makeTemplates([
+            {
+                name: "start",
+                stringArray: [
+                    "AAAAAAAAA",
+                    "A C  C DA",
+                    "AAAAAAAAA",
+                    "AF CCC JA",
+                    "AAAACAAAA",
+                    "AEAAHAABA",
+                    "A AAAAABA",
+                    "A CIAKC A",
+                    "AAAAAAAAA"
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "E": LevelEnd(),
+                    "D": Portal({ color: colors.blue, destination: {
+                        name: "start",
+                        position: Point(1, 3)
+                    }}),
+
+                    "F": Portal({ color: colors.blue, destination: {
+                        name: "start",
+                        position: Point(7, 1)
+                    }}),
+
+                    "H": Portal({ color: colors.green, destination: {
+                        name: "start",
+                        position: Point(3, 7)
+                    }}),
+
+                    "I": Portal({ color: colors.green, destination: {
+                        name: "start",
+                        position: Point(4, 5)
+                    }}),
+
+                    "J": Portal({ color: colors.red, destination: {
+                        name: "start",
+                        position: Point(5, 7)
+                    }}),
+
+                    "K": Portal({ color: colors.red, destination: {
+                        name: "start",
+                        position: Point(7, 3)
+                    }})
+                },
+                params: {
+                    scale: 2,
+                    startPos: Point(1, 1)
                 }
             }
         ])

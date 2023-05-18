@@ -27,6 +27,7 @@ type Player = {
     draw: () => void,
     deleteSprite: () => void,
     destroy: () => void,
+    setPosition: (position: Point) => void,
     move: (direction: Direction) => void,
     handleKeypress: (key: string) => void
 }
@@ -66,6 +67,13 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
             this.deleteSprite();
         },
 
+        // Sets the position of the player
+        setPosition(position: Point) {
+            this.deleteSprite();
+            this.position = position;
+            this.draw();
+        },
+
         // Moves the player in a direction
         move(direction: Direction) {
             if (this.room === null)
@@ -87,9 +95,7 @@ const Player = ({position, level = null, room = null}: PlayerParams) => {
             }
 
             if (this.room.isPositionValid(newPosition)) {
-                this.deleteSprite();
-                this.position = this.position.add(offset);
-                this.draw();
+                this.setPosition(this.position.add(offset));
 
                 this.level.incrementSteps();
 

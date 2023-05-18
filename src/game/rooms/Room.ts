@@ -9,6 +9,7 @@ import Level from "../levels/Level";
 import { IterateFunction } from "../../utils/types";
 import { directionOffsets, flipDirection } from "../../utils/enums";
 import { RoomLink } from "./RoomLink";
+import Player from "../Player";
 
 // This type represents a map from characters to room objects
 type RoomCharMap = Record<PointString, Tile>;
@@ -28,6 +29,7 @@ type Room = {
     getStartPos: () => Point,
     getWidth: () => number,
     getHeight: () => number,
+    getPlayer: () => Player,
     makeObject: (tile: Tile) => Tile,
     loadFromLayout: (stringArray: Array<String>, charMap: RoomCharMap) => void,
     loadObjects: (objects: Record<PointString, Tile>) => void,
@@ -110,6 +112,11 @@ const Room = ({
         // Gets the height of the room
         getHeight(): number {
             return this.height;
+        },
+
+        // Returns a reference to the player
+        getPlayer(): Player {
+            return this.level.getPlayer();
         },
 
         // Creates an instance of an object
