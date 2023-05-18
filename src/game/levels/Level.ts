@@ -176,9 +176,9 @@ const Level = ({ game, startingRoom, name, rooms = {} }: LevelParams): Level => 
 
             this.game.setPlayer(this.player);
             
-            this.player.draw();
-            
             this.room.draw();
+            
+            this.player.draw();
         },
 
         // Loads a room using a RoomLink

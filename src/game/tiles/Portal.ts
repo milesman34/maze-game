@@ -35,10 +35,13 @@ const Portal = ({room = null, color, destination}: PortalParams): Portal => {
 
         handleCollision() {
             let player = this.room.getPlayer();
+            let level = player.level;
 
             // This type of teleportation is easier, since the rooms match
             if (this.destination.name === this.room.name) {
                 player.setPosition(this.destination.position);
+            } else {
+                level.loadRoom(this.destination.name, this.destination.position);
             }
         },
 
