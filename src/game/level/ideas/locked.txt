@@ -12,9 +12,9 @@ Once you reach the bottom, the room below it contains a key (pink) you can use t
 key for getting the magenta key.
 
 Green:
-(yellow, orange, lime, green, red, magenta2)
+(yellow, orange, lime, red)
 This room is a 3 block wide corridor, there are some small rooms on the side, each of them have keys, and you need 3 different ones
-out of 6 to get to the blue key
+out of 4 to get to the blue key
 
 Cyan:
 This room is a maze of portals, with some rooms, picking the correct portals gets you to the blue key

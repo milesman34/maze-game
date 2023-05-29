@@ -1,8 +1,8 @@
 import { GameState } from '../utils/enums';
 import { generateTextForValue, localStorageLoadInt } from '../utils/utils';
 import Game from './Game';
-import { LevelCollection, LevelTemplate } from './levels/LevelTemplate';
-import levels from './levels/levels';
+import { LevelCollection, LevelTemplate } from './level/LevelTemplate';
+import levels from './level/levels';
 import * as $ from "jquery";
 
 // This object represents an entry in the level select screen, tracking the most coins collected and least steps used

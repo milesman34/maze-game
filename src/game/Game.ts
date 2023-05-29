@@ -2,9 +2,9 @@ import { GameState } from "../utils/enums";
 import { generateTextForValue } from "../utils/utils";
 import LevelSelectScreen from "./LevelSelectScreen";
 import Player from "./Player";
-import Level from "./levels/Level";
-import { LevelTemplate } from "./levels/LevelTemplate";
-import levels from "./levels/levels";
+import Level from "./level/Level";
+import { LevelTemplate } from "./level/LevelTemplate";
+import levels from "./level/levels";
 import * as $ from "jquery";
 
 type Game = {

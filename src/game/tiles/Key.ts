@@ -1,4 +1,3 @@
-import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
 import Tile from "./Tile";
 import { Color } from "../../utils/types";

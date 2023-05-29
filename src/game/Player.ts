@@ -2,7 +2,7 @@ import { Point } from "../utils/Point";
 import { Direction } from "../utils/enums";
 import { Room } from "./rooms/Room";
 import * as PIXI from "pixi.js";
-import Level from "./levels/Level";
+import Level from "./level/Level";
 import CanvasDrawer from "../utils/CanvasDrawer";
 
 let template = new PIXI.Graphics();

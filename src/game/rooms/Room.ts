@@ -5,9 +5,9 @@ import * as constants from "../../utils/constants"
 import Tile from "../tiles/Tile";
 import app from "../../app";
 import { RoomTemplate } from "./RoomTemplate";
-import Level from "../levels/Level";
+import Level from "../level/Level";
 import { IterateFunction } from "../../utils/types";
-import { directionOffsets, flipDirection } from "../../utils/enums";
+import { directionOffsets } from "../../utils/enums";
 import { RoomLink } from "./RoomLink";
 import Player from "../Player";
 

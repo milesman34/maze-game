@@ -1,7 +1,7 @@
 import { Point } from "../../utils/Point";
 import * as PIXI from "pixi.js";
 import { Room } from "../rooms/Room";
-import Level from "../levels/Level";
+import Level from "../level/Level";
 import CanvasDrawer from "../../utils/CanvasDrawer";
 import { ObjectType } from "../../utils/enums";
 import { Color } from "../../utils/types";
