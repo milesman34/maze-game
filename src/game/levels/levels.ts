@@ -23,7 +23,13 @@ const colors = {
     blue: 0x0000FF,
     lightBlue: 0x00FFFF,
     yellow: 0xFFFF00,
-    purple: 0xFF00FF
+    purple: 0xB600FF,
+    cyan: 0x009583,
+    magenta: 0xFF00FF,
+    pink: 0xF499FF,
+    orange: 0xFFAA00,
+    lime: 0x97FF00,
+    magenta2: 0xFF009B
 }
 
 const levels = LevelTemplate.makeTemplates([
@@ -552,6 +558,344 @@ const levels = LevelTemplate.makeTemplates([
                 params: {
                     scale: 2,
                     startPos: Point(1, 1)
+                }
+            }
+        ])
+    },
+
+    {
+        name: "locked",
+        startingRoom: "start",
+        rooms: RoomTemplate.makeTemplates([
+            {
+                name: "start",
+                stringArray: [
+                    "AAALHLAAA",
+                    "A       A",
+                    "A       A",
+                    "K       M",
+                    "G       I",
+                    "K       M",
+                    "A       A",
+                    "A       A",
+                    "AAAJFJAAA"
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "F": Lock({ color: colors.blue, amount: 3 }),
+                    "G": Portal({ color: colors.lightBlue, destination: {
+                        name: "lightbluehub",
+                        position: Point(8, 4)
+                    }}),
+                    "H": Portal({ color: colors.green, destination: {
+                        name: "start",
+                        position: Point(4, 4)
+                    }}),
+                    "I": Portal({ color: colors.cyan, destination: {
+                        name: "start",
+                        position: Point(4, 4)
+                    }}),
+                    "J": WallWithMarker({ color: colors.blue }),
+                    "K": WallWithMarker({ color: colors.lightBlue }),
+                    "L": WallWithMarker({ color: colors.green }),
+                    "M": WallWithMarker({ color: colors.cyan })
+                },
+                params: {
+                    scale: 2,
+                    startPos: Point(4, 4)
+                },
+                roomLinks: [
+                    RoomLink.createForTemplate(Point(0, 4), {
+                        name: "bonus1",
+                        position: Point(6, 3)
+                    }, Direction.Left)
+                ]
+            },
+            {
+                name: "lightbluehub",
+                stringArray: [
+                    "AAAK KAAA",
+                    "ACCA ACCA",
+                    "ACC   CCA",
+                    "AAAA AAAA",
+                    "AIHG CC F",
+                    "AAAA AAAA",
+                    "ACC   CCA",
+                    "ACCA ACCA",
+                    "AAAL LAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "F": Portal({ color: colors.lightBlue, destination: {
+                        name: "start",
+                        position: Point(0, 4)
+                    }}),
+                    "G": Lock({ color: colors.lightBlue }),
+                    "H": Lock({ color: colors.magenta }),
+                    "I": Key({ color: colors.blue }),
+                    "K": WallWithMarker({ color: colors.lightBlue }),
+                    "L": WallWithMarker({ color: colors.magenta })
+                },
+                params: {
+                    scale: 2
+                },
+                roomLinks: [
+                    RoomLink.createForTemplate(Point(4, 0), {
+                        name: "lightbluekeyhub",
+                        position: Point(7, 14)
+                    }, Direction.Up),
+                    RoomLink.createForTemplate(Point(4, 8), {
+                        name: "magentakey",
+                        position: Point(7, 0)
+                    }, Direction.Down)
+                ]
+            },
+            {
+                name: "lightbluekeyhub",
+                stringArray: [
+                    "AAAAAAA AAAAAAA",
+                    "A  CCC  ACCC  A",
+                    "ACAAAAA AACAACA",
+                    "A ACCC  A  ABBA",
+                    "ACAAAAABACAAAAA",
+                    "A            BA",
+                    "AAAACAAAAACA AA",
+                    "     APKQACACC ",
+                    "ACAAAAAAAACACCA",
+                    "A     A ACCAAAA",
+                    "AAA ACA       A",
+                    "ACCCACACACACACA",
+                    "AA AAAA AAA A A",
+                    "A  C  C CCABABA",
+                    "AAAAAAA AAAAAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "K": Key({ color: colors.lightBlue }),
+                    "P": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyright",
+                            position: Point(9, 4)
+                        }
+                    }),
+                    "Q": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyright",
+                            position: Point(9, 6)
+                        }
+                    })
+                },
+                roomLinks: [
+                    RoomLink.createForTemplate(Point(14, 7), {
+                        name: "lightbluekeyright",
+                        position: Point(0, 5)
+                    }, Direction.Right),
+                    RoomLink.createForTemplate(Point(7, 0), {
+                        name: "lightbluekeyup",
+                        position: Point(5, 10)
+                    }, Direction.Up),
+                    RoomLink.createForTemplate(Point(0, 7), {
+                        name: "lightbluekeyleft",
+                        position: Point(10, 5)
+                    }, Direction.Left)
+                ]
+            },
+            {
+                name: "lightbluekeyright",
+                stringArray: [
+                    "AAAAAAAAAAA",
+                    "ACC   A C A",
+                    "AAA A ACACA",
+                    "A CCA C ACA",
+                    "A A AAA APA",
+                    "  A  CACAAA",
+                    "A A A A AQA",
+                    "ACCCACAAACA",
+                    "AAAAA A   A",
+                    "ABC C   ACA",
+                    "AAAAAAAAAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "P": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyhub",
+                            position: Point(6, 7)
+                        }
+                    }),
+                    "Q": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyhub",
+                            position: Point(8, 7)
+                        }
+                    })
+                }
+            },
+            {
+                name: "lightbluekeyup",
+                stringArray: [
+                    "AAAAAAAAAAA",
+                    "A  CPAQC  A",
+                    "A AAAAAAA A",
+                    "ACA CBC ACA",
+                    "ACA AAA ACA",
+                    "A A     A A",
+                    "A  CACAC  A",
+                    "ACAAACAAACA",
+                    "ACACACACACA",
+                    "ABA     ABA",
+                    "AAAAA AAAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "P": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyleft",
+                            position: Point(1, 4)
+                        }
+                    }),
+                    "Q": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyleft",
+                            position: Point(1, 6)
+                        }
+                    })
+                }
+            },
+            {
+                name: "lightbluekeyleft",
+                stringArray: [
+                    "AAAAAAAAAAA",
+                    "ABC     LGA",
+                    "ACAAACAAAAA",
+                    "ACA   A C A",
+                    "APCCACACACA",
+                    "AAAAAC  A  ",
+                    "AQCCACAAACA",
+                    "ACACA   ACA",
+                    "A   AAA AAA",
+                    "ABA CCC CBA",
+                    "AAAAAAAAAAA"
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "L": Lock({ color: colors.lime }),
+                    "P": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyup",
+                            position: Point(4, 1)
+                        }
+                    }),
+                    "Q": Portal({
+                        color: colors.lightBlue,
+                        destination: {
+                            name: "lightbluekeyup",
+                            position: Point(6, 1)
+                        }
+                    })
+                }
+            },
+            {
+                name: "bonus1",
+                stringArray: [
+                    "AAAAAAA",
+                    "A  B  A",
+                    "A BBB A",
+                    "ABBBBB ",
+                    "A BBB A",
+                    "A  B  A",
+                    "AAAAAAA",
+                ],
+                charMap: {
+                    ...defCharMap
+                },
+                params: {
+                    scale: 2
+                }
+            },
+            {
+                name: "magentakey",
+                stringArray: [
+                    "AAAAAAA AAAAAAA",
+                    "ACA  CA  ACCBBA",
+                    "ACCCA C  ACAAAA",
+                    "AAAAAAA    ACCA",
+                    "M C A CCAAAAACA",
+                    " CCCA AAA B ABA",
+                    "M C ACCCABKBABA",
+                    "AMPMAAA A B ABA",
+                    "ACC     AAQAA A",
+                    "AAA CAC  C A  A",
+                    "AC CAAAC A   AA",
+                    "AACAA AA A C CA",
+                    "A CCAAAC A AAAA",
+                    "ACA CAC  A C CA",
+                    "AAAAAAL LAAAAAA"
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "P": Lock({ color: colors.pink }),
+                    "Q": Lock({ color: colors.purple }),
+                    "K": Key({ color: colors.magenta }),
+                    "L": WallWithMarker({ color: colors.pink }),
+                    "M": WallWithMarker({ color: colors.purple })
+                },
+                roomLinks: [
+                    RoomLink.createForTemplate(Point(7, 14), {
+                        name: "pinkkey",
+                        position: Point(5, 0)
+                    }, Direction.Down),
+                    RoomLink.createForTemplate(Point(0, 5), {
+                        name: "purplekey",
+                        position: Point(10, 5)
+                    }, Direction.Left)
+                ]
+            },
+            {
+                name: "purplekey",
+                stringArray: [
+                    "AAAAAAAAAAA",
+                    "A C C ACACA",
+                    "A A A A C A",
+                    "ACACACACACA",
+                    "APABA CCA A",
+                    "ACACAAAAA  ",
+                    "A ABA ACA A",
+                    "A AAACA CCA",
+                    "ACAC  AAA A",
+                    "A C A CBC A",
+                    "AAAAAAAAAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "P": Key({ color: colors.purple })
+                }
+            },
+            {
+                name: "pinkkey",
+                stringArray: [
+                    "AAAAA AAAAA",
+                    "AB CACACCCA",
+                    "AAA   CCACA",
+                    "A  CACAAAAA",
+                    "A AAACA   A",
+                    "ABA C C ACA",
+                    "ACA AAAAABA",
+                    "A C APC   A",
+                    "ACAAAAA AAA",
+                    "A CCC C CBA",
+                    "AAAAAAAAAAA",
+                ],
+                charMap: {
+                    ...defCharMap,
+                    "P": Key({ color: colors.pink })
                 }
             }
         ])

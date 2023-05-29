@@ -19,14 +19,14 @@ type RoomTemplate = {
 
 type RoomTemplateParams = {
     name: string,
-    stringArray: Array<string>,
+    stringArray?: Array<string>,
     charMap: RoomCharMap,
     objects?: Record<PointString, Tile>,
-    params: RoomParams,
+    params?: RoomParams,
     roomLinks?: Array<RoomLink>
 }
 
-const RoomTemplate = ({name, stringArray, charMap, objects = {}, params, roomLinks = []}: RoomTemplateParams): RoomTemplate => ({
+const RoomTemplate = ({name, stringArray = [], charMap, objects = {}, params = {scale: 1}, roomLinks = []}: RoomTemplateParams): RoomTemplate => ({
     name,
     stringArray,
     charMap,

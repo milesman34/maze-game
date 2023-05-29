@@ -1,0 +1,20 @@
+Locked has 3 portals that take you to parts of the level to collect the 3 blue keys
+Light blue, green, cyan
+
+Light Blue:
+First room lets you pick up or down, but you need both keys to unlock the blue keys (light blue, magenta)
+Top room has some standard maze gameplay, with an enclosed area with portals which has one of the keys (light blue) that you can't get yet.
+To get to this portal there are 3 possible rooms, left, right, and top, which all have standard maze gameplay.
+The right room gets you the portal, while the other 2 let you teleport between them. One of them has a portal that requires
+a key from a different part of the maze, but gives you a bonus
+The bottom part just has some square shapes to go around.
+Once you reach the bottom, the room below it contains a key (pink) you can use to unlock a room to the left, which has the purple
+key for getting the magenta key.
+
+Green:
+(yellow, orange, lime, green, red, magenta2)
+This room is a 3 block wide corridor, there are some small rooms on the side, each of them have keys, and you need 3 different ones
+out of 6 to get to the blue key
+
+Cyan:
+This room is a maze of portals, with some rooms, picking the correct portals gets you to the blue key

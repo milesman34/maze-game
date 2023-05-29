@@ -8,7 +8,7 @@ import { Color } from "../../utils/types"
 import Tile from "../tiles/Tile"
 import { RoomLink } from "../rooms/RoomLink"
 import { Point } from "../../utils/Point"
-import { GameState, ObjectType, flipDirection } from "../../utils/enums"
+import { GameState, flipDirection } from "../../utils/enums"
 
 // This object represents a level in the game
 // Each level has a series of rooms
